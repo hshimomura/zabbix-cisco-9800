@@ -25,10 +25,11 @@ Please refer to below MIBs to understand what infomration it uses.
 
 ## Requiements
 - Cisco Catalyst 9800 Series Wireless Controller and supported Access Point
-  - [Embdedded Wireless Controller For Catalyst Access Point](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html) doesn't work because SNMP is not supported 
+  - [Embdedded Wireless Controller For Catalyst Access Point](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html) doesn't work [^1] 
   - Other controllers including [Cisco Catalyst 9800-CL Wireless Controller for Cloud](https://www.cisco.com/c/en/us/products/collateral/wireless/catalyst-9800-cl-wireless-controller-cloud/nb-06-cat9800-cl-cloud-wirel-data-sheet-ctp-en.html) support SNMP
 - Need IOS-XE 17.11 or later software image to get some of wireless specific SNMP OID
 - SNNP and SNMP trap on Catalyst 9800 WLC
+[^1]: Embedded Wireless Controller (EWC) does not support SNMP and does not implement the SNMP MIBs of Cisco Catalyst 9800 Series Wireless Controllers, although EWC might respond to some of the object identifiers (OIDs). [Configuration guide](https://www.cisco.com/c/en/us/td/docs/wireless/controller/ewc/17-6/config-guide/ewc_cg_17_6/new_configuration_model.html)
 
 Here is sample configuration for SNMP
 ```
@@ -40,30 +41,28 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 ```
 
 ## Monitoring items
-- Access Point
-  - AP Name: AIRESPACE-WIRELESS-MIB::bsnAPName
-  - AP Channel Number (2.4GHz/5GHz): AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber
-  - AP Channel Bandwidth (5GHz): CISCO-LWAPP-AP-MIB::cLAp11ChannelBandwidth
-  - AP Channel Utilization (2.4GHz/5GHz): AIRESPACE-WIRELESS-MIB::bsnAPIfLoadChannelUtilization
-  - AP Operation Status: AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus
-  - AP Serial Number: AIRESPACE-WIRELESS-MIB::bsnAPSerialNumber
-  - AP Software Version: AIRESPACE-WIRELESS-MIB::bsnAPSoftwareVersion
-  - AP Tx Power Level (2.4GHz/5GHz): AIRESPACE-WIRELESS-MIB::bsnAPIfPhyTxPowerLevel
-- Current Number of AP: CISCO-LWAPP-AP-MIB::cLApGlobalAPConnectCount.0
-- Number of APs Supported: CISCO-LWAPP-AP-MIB::cLApGlobalMaxApsSupported.0
-- HA SSO status: CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent
-- Mobility Member
-  - Mobility Member Tunnel Status (Control path): CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus
-  - Mobility Member Tunnel Status (Data path): CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus
-- Rouge AP Count: AIRESPACE-WIRELESS-MIB::bsnRogueAPDot11MacAddress
-- Rogue Client Count: AIRESPACE-WIRELESS-MIB::bsnRogueClientDot11MacAddress
-- SSID
-  - SSID Administrative Status: AIRESPACE-WIRELESS-MIB::bsnDot11EssAdminStatus
-  - SSID Number of Clients: AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations
-- SNMP Trap
-  - AP diassociation: AIRESPACE-WIRELESS-MIB::bsnAPDisassociated, CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated
-  - Channel Changed: AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged
-  - DFS Radar Detection: AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected
+| Monitoring Item  |SNMP MIBs |
+| ------------- | ------------- |
+| AP Name  | AIRESPACE-WIRELESS-MIB::bsnAPName  |
+| AP Channel Number (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber |
+| AP Channel Bandwidth (5GHz) | CISCO-LWAPP-AP-MIB::cLAp11ChannelBandwidth|
+| AP Channel Utilization (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfLoadChannelUtilization|
+| AP Operation Status | AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus|
+| AP Serial Number | AIRESPACE-WIRELESS-MIB::bsnAPSerialNumber|
+| AP Software Version | AIRESPACE-WIRELESS-MIB::bsnAPSoftwareVersion|
+| AP Tx Power Level (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyTxPowerLevel|
+| Current Number of AP | CISCO-LWAPP-AP-MIB::cLApGlobalAPConnectCount.0|
+| Number of APs Supported | CISCO-LWAPP-AP-MIB::cLApGlobalMaxApsSupported.0|
+| HA SSO status | CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent |
+| Mobility Member Status (Control) | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus |
+| Mobility Member Status (Data) | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus |
+| Rouge AP Count | AIRESPACE-WIRELESS-MIB::bsnRogueAPDot11MacAddress |
+| Rogue Client Count | AIRESPACE-WIRELESS-MIB::bsnRogueClientDot11MacAddress |
+| SSID Administrative Status | AIRESPACE-WIRELESS-MIB::bsnDot11EssAdminStatus |
+| SSID Number of Clients | AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations |
+| AP diassociation | AIRESPACE-WIRELESS-MIB::bsnAPDisassociated, CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated |
+| Channel Changed | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged |
+| DFS Radar Detection | AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected |
 
 ## Screenshots
 ![Screenshot1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
