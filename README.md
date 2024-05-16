@@ -36,40 +36,41 @@ snmp-server community [SNMP COMMUNITY] RO
 snmp-server location ["YOUR PHYSICAL ADDRESS"]
 snmp-server enable traps wireless bsnAutoRF
 snmp-server enable traps rf
-snmp-server host [SNMPSERVER IP ADDRESS] version 2c [SNMP COMMUNITY]
+snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 ```
 
 ## Monitoring items
 - Access Point
-  - AP Name
-  - AP Channel Number (2.4GHz/5GHz)
-  - AP Channel Bandwidth (5GHz)
-  - AP Channel Utilization (2.4GHz/5GHz)
-  - AP Operation Status
-  - AP Serial Number
-  - AP Software Version
-  - AP Tx Power Level (2.4GHz/5GHz)
-- Current Number of AP
-- Number of APs Supported
-- HA SSO status
+  - AP Name: AIRESPACE-WIRELESS-MIB::bsnAPName
+  - AP Channel Number (2.4GHz/5GHz): AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber
+  - AP Channel Bandwidth (5GHz): CISCO-LWAPP-AP-MIB::cLAp11ChannelBandwidth
+  - AP Channel Utilization (2.4GHz/5GHz): AIRESPACE-WIRELESS-MIB::bsnAPIfLoadChannelUtilization
+  - AP Operation Status: AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus
+  - AP Serial Number: AIRESPACE-WIRELESS-MIB::bsnAPSerialNumber
+  - AP Software Version: AIRESPACE-WIRELESS-MIB::bsnAPSoftwareVersion
+  - AP Tx Power Level (2.4GHz/5GHz): AIRESPACE-WIRELESS-MIB::bsnAPIfPhyTxPowerLevel
+- Current Number of AP: CISCO-LWAPP-AP-MIB::cLApGlobalAPConnectCount.0
+- Number of APs Supported: CISCO-LWAPP-AP-MIB::cLApGlobalMaxApsSupported.0
+- HA SSO status: CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent
 - Mobility Member
-  - Mobility Member Tunnel Status (Control/Data path)
-- Rouge AP Count
-- Rogue Client Count
+  - Mobility Member Tunnel Status (Control path): CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus
+  - Mobility Member Tunnel Status (Data path): CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus
+- Rouge AP Count: AIRESPACE-WIRELESS-MIB::bsnRogueAPDot11MacAddress
+- Rogue Client Count: AIRESPACE-WIRELESS-MIB::bsnRogueClientDot11MacAddress
 - SSID
-  - SSID Administrative Status
-  - SSID Number of Clients 
+  - SSID Administrative Status: AIRESPACE-WIRELESS-MIB::bsnDot11EssAdminStatus
+  - SSID Number of Clients: AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations
 - SNMP Trap
-  - AP diassociation
-  - Channel Changed
-  - DFS Radar Detection
+  - AP diassociation: AIRESPACE-WIRELESS-MIB::bsnAPDisassociated, CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated
+  - Channel Changed: AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged
+  - DFS Radar Detection: AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected
 
 ## Screenshots
 ![Screenshot1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
 ![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
 
 ## Imprtant notes
-Test is only done on small lab environment. On large environment, please take care CPU ulization of Wireless Controller if SNMP consume too much resources.
+Test is only done on small lab environment. On large environment, monitor CPU ulization of Wireless Controller in case SNMP consumes too much resources.
 
 ## Tested Environment
 - Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.3, RELEASE SOFTWARE (fc7)
