@@ -68,6 +68,9 @@ snmp-server host [SNMPSERVER IP ADDRESS] version 2c [SNMP COMMUNITY]
 ![Screenshot1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
 ![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
 
+## Imprtant notes
+Test is only done on small lab environment. On large environment, please take care CPU ulization of Wireless Controller if SNMP consume too much resources.
+
 ## Tested Environment
 - Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.3, RELEASE SOFTWARE (fc7)
   - C9800-L-F-K9
