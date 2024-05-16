@@ -37,10 +37,6 @@ snmp-server host [SNMPSERVER IP ADDRESS] version 2c public
 ```
 
 ## Monitoring items
-- Current Number of AP
-- Number of APs Supported
-- Rouge AP Count
-- Rogue Client Count
 - Access Point
   - AP Name
   - AP Channel Number (2.4GHz/5GHz)
@@ -50,16 +46,21 @@ snmp-server host [SNMPSERVER IP ADDRESS] version 2c public
   - AP Tx Power Level (2.4GHz/5GHz)
   - AP Serial Number
   - AP Software Version
+- Current Number of AP
+- Number of APs Supported
+- HA SSO status
+- Mobility Member Tunnel status
+  - Mobility Status (Control/Data path)
+- Rouge AP Count
+- Rogue Client Count
 - SSID
   - SSID Administrative Status
   - SSID Number of Clients 
-- Mobility Member
-  - Mobility Status (Control/Data path)
-- HA SSO status
 - SNMP Trap
+  - AP diassociation
   - Channel Changed
   - DFS Radar Detected
-  - AP diassociation
+
 
 ## Tested Environment
 Tested on IOS-XE 17.12.3 and Zabbix 6.0.29 LTS.
