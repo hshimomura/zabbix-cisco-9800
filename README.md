@@ -3,8 +3,8 @@ Zabbix template for Cisco Catalyst 9800 Series Wireless Controllers
 
 ## What it is?
 This is a Zabbix template for [Cisco Catalyst 9800 Series Wireless Controllers](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html).
-It covers wireless monitoring like Wireless Client Count, AP Count, Radio ulization, Mobility tunnel status and High Availability status.
-Please use "Cisco IOS by SNMP" template or others to get general IOS-XE status like CPU utilization, Memory usage or interface status.
+It covers wireless monitoring like Wireless Client Count, AP Count, Radio utilization, Mobility tunnel status, and High Availability status.
+Please use the "Cisco IOS by SNMP" template or others to get general IOS-XE status like CPU utilization, Memory usage, or interface status.
 
 
 ## Requiements
@@ -15,7 +15,7 @@ Please use "Cisco IOS by SNMP" template or others to get general IOS-XE status l
 - SNNP and SNMP trap on Catalyst 9800 WLC
 [^1]: Embedded Wireless Controller (EWC) does not support SNMP and does not implement the SNMP MIBs of Cisco Catalyst 9800 Series Wireless Controllers, although EWC might respond to some of the object identifiers (OIDs). [Configuration guide](https://www.cisco.com/c/en/us/td/docs/wireless/controller/ewc/17-6/config-guide/ewc_cg_17_6/new_configuration_model.html)
 
-Here is sample configuration for SNMP
+Here is a sample configuration for SNMP
 ```
 snmp-server community [SNMP COMMUNITY] RO
 snmp-server location ["YOUR PHYSICAL ADDRESS"]
@@ -48,7 +48,7 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 | Channel Changed | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged |
 | DFS Radar Detection | AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected |
 
-The template use just OID and Standard MIB. No need to install vendor MIB. Please refer to below MIBs to get understand about each SNMP MIB.
+The template uses just OID and Standard MIB. No need to install vendor MIB. Please refer to the below MIBs to understand each SNMP MIB.
 - AIRESPACE-REF-MIB.my
 - AIRESPACE-WIRELESS-CAPABILITY.my
 - AIRESPACE-WIRELESS-MIB.my
@@ -74,4 +74,4 @@ The template use just OID and Standard MIB. No need to install vendor MIB. Pleas
 - Zabbix 6.0.29
 
 > [!IMPORTANT]
-Test is only done on small lab environment. On large environment, monitor CPU ulization of Wireless Controller in case SNMP consumes too much resources.
+The test is only done in small lab environments. In a large environment, monitor the CPU utilization of the Wireless Controller in case SNMP consumes too many resources.
