@@ -3,11 +3,11 @@ Zabbix template for Cisco Catalyst 9800 Series Wireless Controllers
 
 ## What it is?
 This is Zabbix template for [Cisco Catalyst 9800 Series Wireless Controllers](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html).
-It covers wireless monitoring like Client Count, AP Count, Radio ulization, Mobility status and High Availability status.
+It covers wireless monitoring like Wireless Client Count, AP Count, Radio ulization, Mobility tunnel status and High Availability status.
 Please use "Cisco IOS by SNMP" template or others to get general IOS-XE status like CPU utilization, Memory usage or interface status.
 
 The template use just OID and Standard MIB. No need to install vendor MIB.
-Please refer to below MIBs to understand what infomration it's using.
+Please refer to below MIBs to understand what infomration it uses.
 - AIRESPACE-REF-MIB.my
 - AIRESPACE-WIRELESS-CAPABILITY.my
 - AIRESPACE-WIRELESS-MIB.my
@@ -25,7 +25,7 @@ Please refer to below MIBs to understand what infomration it's using.
 
 ## Requiements
 - Cisco Catalyst 9800 Series Wireless Controller and supported Access Point
-  - [Embdedded Wireless Controller For Catalyst Access Point](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html) doesn't work because SNMP is not supported on it
+  - [Embdedded Wireless Controller For Catalyst Access Point](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html) doesn't work because SNMP is not supported 
   - Other controllers including [Cisco Catalyst 9800-CL Wireless Controller for Cloud](https://www.cisco.com/c/en/us/products/collateral/wireless/catalyst-9800-cl-wireless-controller-cloud/nb-06-cat9800-cl-cloud-wirel-data-sheet-ctp-en.html) support SNMP
 - Need IOS-XE 17.11 or later software image to get some of wireless specific SNMP OID
 - SNNP and SNMP trap on Catalyst 9800 WLC
