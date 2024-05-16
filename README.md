@@ -28,12 +28,11 @@ Please refer to below MIBs to understand what infomration it's using.
 
 Here is sample configuration for SNMP
 ```
-snmp-server community public RO
-snmp-server location "YOUR PHYSICAL ADDRESS"
-snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server community [SNMP COMMUNITY] RO
+snmp-server location ["YOUR PHYSICAL ADDRESS"]
 snmp-server enable traps wireless bsnAutoRF
 snmp-server enable traps rf
-snmp-server host [SNMPSERVER IP ADDRESS] version 2c public
+snmp-server host [SNMPSERVER IP ADDRESS] version 2c [SNMP COMMUNITY]
 ```
 
 ## Monitoring items
@@ -43,14 +42,14 @@ snmp-server host [SNMPSERVER IP ADDRESS] version 2c public
   - AP Channel Bandwidth (5GHz)
   - AP Channel Utilization (2.4GHz/5GHz)
   - AP Operation Status
-  - AP Tx Power Level (2.4GHz/5GHz)
   - AP Serial Number
   - AP Software Version
+  - AP Tx Power Level (2.4GHz/5GHz)
 - Current Number of AP
 - Number of APs Supported
 - HA SSO status
-- Mobility Member Tunnel status
-  - Mobility Status (Control/Data path)
+- Mobility Member
+  - Mobility Member Tunnel Status (Control/Data path)
 - Rouge AP Count
 - Rogue Client Count
 - SSID
@@ -59,8 +58,9 @@ snmp-server host [SNMPSERVER IP ADDRESS] version 2c public
 - SNMP Trap
   - AP diassociation
   - Channel Changed
-  - DFS Radar Detected
+  - DFS Radar Detection
 
 
 ## Tested Environment
-Tested on IOS-XE 17.12.3 and Zabbix 6.0.29 LTS.
+- Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.3, RELEASE SOFTWARE (fc7)
+- Zabbix 6.0.29
