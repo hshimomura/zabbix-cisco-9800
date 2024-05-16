@@ -64,6 +64,9 @@ snmp-server host [SNMPSERVER IP ADDRESS] version 2c [SNMP COMMUNITY]
   - Channel Changed
   - DFS Radar Detection
 
+## Screenshots
+![Screenshot1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
+![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
 
 ## Tested Environment
 - Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.3, RELEASE SOFTWARE (fc7)
