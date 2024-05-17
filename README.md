@@ -7,12 +7,12 @@ It covers wireless monitoring like Wireless Client Count, AP Count, Radio utiliz
 Please use the "Cisco IOS by SNMP" template or others to get general IOS-XE status like CPU utilization, Memory usage, or interface status.
 
 
-## Requiements
+## Requirements
 - Cisco Catalyst 9800 Series Wireless Controller and supported Access Point
-  - [Embdedded Wireless Controller For Catalyst Access Point](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html) doesn't work [^1] 
-  - Other controllers including [Cisco Catalyst 9800-CL Wireless Controller for Cloud](https://www.cisco.com/c/en/us/products/collateral/wireless/catalyst-9800-cl-wireless-controller-cloud/nb-06-cat9800-cl-cloud-wirel-data-sheet-ctp-en.html) support SNMP
+  - [Embedded Wireless Controller for Catalyst Access Point](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html) doesn't work [^1] 
+  - Other controllers, including [Cisco Catalyst 9800-CL Wireless Controller for Cloud](https://www.cisco.com/c/en/us/products/collateral/wireless/catalyst-9800-cl-wireless-controller-cloud/nb-06-cat9800-cl-cloud-wirel-data-sheet-ctp-en.html) support SNMP
 - IOS-XE 17.11 or later software image to get many wireless SNMP OIDs like AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations
-- SNNP and SNMP trap configuration on Catalyst 9800 WLC
+- SNMP and SNMP trap configuration on Catalyst 9800 WLC
 - Zabbix 6.0 or later (tested on 6.0.29)
 [^1]: Embedded Wireless Controller (EWC) does not support SNMP and does not implement the SNMP MIBs of Cisco Catalyst 9800 Series Wireless Controllers, although EWC might respond to some of the object identifiers (OIDs). [Configuration guide](https://www.cisco.com/c/en/us/td/docs/wireless/controller/ewc/17-6/config-guide/ewc_cg_17_6/new_configuration_model.html)
 
@@ -29,12 +29,12 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 
 
 
-## SNMP MIBs what is using
+## SNMP MIBs used
 | Monitoring Item                      | SNMP MIBs                                                                                        |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------ |
 | AP Name                              | AIRESPACE-WIRELESS-MIB::bsnAPName                                                                |
 | AP Channel Number (2.4GHz)           | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber                                                  |
-| AP Channel Number (5GHz)             | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber <br> + CISCO-LWAPP-AP-MIB::cLApExtensionChannels |
+| AP Channel Number (5GHz)             | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber<br>CISCO-LWAPP-AP-MIB::cLApExtensionChannels |
 | AP Channel Bandwidth (5GHz)          | CISCO-LWAPP-AP-MIB::cLAp11ChannelBandwidth                                                       |
 | AP Channel Utilization (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfLoadChannelUtilization                                            |
 | AP Operation Status                  | AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus                                                     |
@@ -50,13 +50,13 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 | Rogue Client Count                   | AIRESPACE-WIRELESS-MIB::bsnRogueClientDot11MacAddress                                            |
 | SSID Administrative Status           | AIRESPACE-WIRELESS-MIB::bsnDot11EssAdminStatus                                                   |
 | SSID Number of Clients               | AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations                                        |
-| AP diassociation                     | AIRESPACE-WIRELESS-MIB::bsnAPDisassociated, CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated           |
+| AP disassociation                    | AIRESPACE-WIRELESS-MIB::bsnAPDisassociated<br>CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated           |
 | Channel Changed [^2]                 | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged                                               |
 | DFS Radar Detection                  | AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected                                                  |
 
 [^2]: trigger is disabled as default
 
-The template uses just OID and Standard MIB. No need to install vendor MIB. Please refer to the below MIBs to understand each SNMP MIB.
+The template uses just OID and Standard MIB. No need to install vendor MIBs. Please refer to the below MIBs to understand each SNMP MIB.
 - AIRESPACE-REF-MIB.my
 - AIRESPACE-WIRELESS-CAPABILITY.my
 - AIRESPACE-WIRELESS-MIB.my
@@ -88,9 +88,9 @@ The test is only done in small lab environments. In a large environment, monitor
 ## Dicovery rules
 | Name | Description | Type | Key and additional info |
 | ------- | -------| -------| -------|
-| bsnAPTable | Enumerate Access Point and create prototype for each | SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPName <br> 1h|
-| cLMobilityGroupMembersOperEntry | Enumurate Mobility Group Member and createprotoype for each | SNMP Agent | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperNodeAddress <br> 1h|
-| cLWlanSsid | Enumerate SSID and create prototype for each | SNMP Agent | CISCO-LWAPP-WLAN-MIB::cLWlanSsid <br> 1h |
+| bsnAPTable | Enumerate Access Point and create prototype for each | SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPName <br>Update: 1h|
+| cLMobilityGroupMembersOperEntry | Enumurate Mobility Group Member and createprotoype for each | SNMP Agent | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperNodeAddress <br>Update: 1h|
+| cLWlanSsid | Enumerate SSID and create prototype for each | SNMP Agent | CISCO-LWAPP-WLAN-MIB::cLWlanSsid <br>Update: 1h |
 
 
 ## Items collected
