@@ -5,7 +5,7 @@ Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプ�
 
 ## これは何ですか？
 
-これは、[Cisco Catalyst 9800シリーズ ワイヤレスLANコントローラ](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html)用のZabbixテンプレートです。SNMPを使用して、無線クライアント数、AP数、ラジオ利用率、モビリティトンネルの状態、ハイアベイラビリティの状態などの無線監視をカバーしています。CPU使用率、メモリ使用量、インターフェース状態などの一般的なIOS-XEステータスはCisco IOS by SNMP」テンプレートやその他のテンプレートを使用して取得してください。
+これは、[Cisco Catalyst 9800シリーズ ワイヤレスLANコントローラ](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html)用のZabbixテンプレートです。SNMPを使用して、無線クライアント数、AP数、ラジオ利用率、モビリティトンネルの状態、ハイアベイラビリティの状態などの無線監視を可能にします。CPU使用率、メモリ使用量、インターフェース状態などの一般的なIOS-XEデバイスのステータスはCisco IOS by SNMP」テンプレートやその他のテンプレートを使用して取得してください。
 
 ## 要件
 
@@ -15,6 +15,7 @@ Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプ�
 - 無線SNMP OIDを取得のため、IOS-XE 17.11以降のソフトウェアイメージが必要です。（例：AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations）
 - Catalyst 9800 WLCでのSNMPおよびSNMPトラップの設定
 - Zabbix 6.0以降（6.0.29でテスト済み）
+
 [^1]: Cisco Embedded Wireless Controller on Catalyst Access Points（EWC）はSNMP MIBを実装していません(一部のオブジェクト識別子（OID）に応答することがあります)。 詳細は[Configuration guide](https://www.cisco.com/c/en/us/td/docs/wireless/controller/ewc/17-6/config-guide/ewc_cg_17_6/new_configuration_model.html)を参照ください。
 
 
