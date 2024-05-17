@@ -28,7 +28,8 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 | Monitoring Item  |SNMP MIBs |
 | ------------- | ------------- |
 | AP Name  | AIRESPACE-WIRELESS-MIB::bsnAPName  |
-| AP Channel Number (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber |
+| AP Channel Number (2.4GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber |
+| AP Channel Number (5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber <br> + CISCO-LWAPP-AP-MIB::cLApExtensionChannels |
 | AP Channel Bandwidth (5GHz) | CISCO-LWAPP-AP-MIB::cLAp11ChannelBandwidth|
 | AP Channel Utilization (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfLoadChannelUtilization|
 | AP Operation Status | AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus|
@@ -45,8 +46,10 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 | SSID Administrative Status | AIRESPACE-WIRELESS-MIB::bsnDot11EssAdminStatus |
 | SSID Number of Clients | AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations |
 | AP diassociation | AIRESPACE-WIRELESS-MIB::bsnAPDisassociated, CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated |
-| Channel Changed | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged |
+| Channel Changed [^2] | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged |
 | DFS Radar Detection | AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected |
+
+[^2]: trigger is disabled as default
 
 The template uses just OID and Standard MIB. No need to install vendor MIB. Please refer to the below MIBs to understand each SNMP MIB.
 - AIRESPACE-REF-MIB.my
