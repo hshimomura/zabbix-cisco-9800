@@ -10,7 +10,7 @@ Please use the "Cisco IOS by SNMP" template or others to get general IOS-XE stat
 ## Requirements
 - Cisco Catalyst 9800 Series Wireless Controller and supported Access Point
   - [Embedded Wireless Controller for Catalyst Access Point](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html) doesn't work [^1] 
-  - Other controllers, including [Cisco Catalyst 9800-CL Wireless Controller for Cloud](https://www.cisco.com/c/en/us/products/collateral/wireless/catalyst-9800-cl-wireless-controller-cloud/nb-06-cat9800-cl-cloud-wirel-data-sheet-ctp-en.html) support SNMP
+  - Other controllers, including [Cisco Catalyst 9800-CL Wireless Controller for Cloud](https://www.cisco.com/c/en/us/products/collateral/wireless/catalyst-9800-cl-wireless-controller-cloud/nb-06-cat9800-cl-cloud-wirel-data-sheet-ctp-en.html) may work
 - IOS-XE 17.11 or later software image to get many wireless SNMP OIDs like AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations
 - SNMP and SNMP trap configuration on Catalyst 9800 WLC
 - Zabbix 6.0 or later (tested on 6.0.29)

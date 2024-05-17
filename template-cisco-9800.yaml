@@ -1,6 +1,6 @@
 zabbix_export:
   version: '6.0'
-  date: '2024-05-17T08:56:08Z'
+  date: '2024-05-17T11:31:38Z'
   groups:
     - uuid: 7df96b18c230490a9a0a9e2307226333
       name: Templates
@@ -108,18 +108,6 @@ zabbix_export:
               priority: WARNING
               description: 'Track CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent'
               manual_close: 'YES'
-        - uuid: 77a8dc19e0824607a1b64b3fd978ebee
-          name: 'SNMP traps (fallback)'
-          type: SNMP_TRAP
-          key: snmptrap.fallback
-          delay: '0'
-          history: 2w
-          trends: '0'
-          value_type: LOG
-          description: 'The item is used to collect all SNMP traps unmatched by other snmptrap items'
-          tags:
-            - tag: component
-              value: network
         - uuid: 719ce1427daf4b8d8731b4b3bfa6b3cc
           name: 'SNMP Trap - Channel Changed'
           type: SNMP_TRAP
