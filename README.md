@@ -26,30 +26,33 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 ```
 
 
-## Monitoring items
-| Monitoring Item  |SNMP MIBs |
-| ------------- | ------------- |
-| AP Name  | AIRESPACE-WIRELESS-MIB::bsnAPName  |
-| AP Channel Number (2.4GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber |
-| AP Channel Number (5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber <br> + CISCO-LWAPP-AP-MIB::cLApExtensionChannels |
-| AP Channel Bandwidth (5GHz) | CISCO-LWAPP-AP-MIB::cLAp11ChannelBandwidth|
-| AP Channel Utilization (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfLoadChannelUtilization|
-| AP Operation Status | AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus|
-| AP Serial Number | AIRESPACE-WIRELESS-MIB::bsnAPSerialNumber|
-| AP Software Version | AIRESPACE-WIRELESS-MIB::bsnAPSoftwareVersion|
-| AP Tx Power Level (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyTxPowerLevel|
-| Current Number of AP | CISCO-LWAPP-AP-MIB::cLApGlobalAPConnectCount.0|
-| Number of APs Supported | CISCO-LWAPP-AP-MIB::cLApGlobalMaxApsSupported.0|
-| HA SSO status | CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent |
-| Mobility Member Status (Control) | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus |
-| Mobility Member Status (Data) | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus |
-| Rouge AP Count | AIRESPACE-WIRELESS-MIB::bsnRogueAPDot11MacAddress |
-| Rogue Client Count | AIRESPACE-WIRELESS-MIB::bsnRogueClientDot11MacAddress |
-| SSID Administrative Status | AIRESPACE-WIRELESS-MIB::bsnDot11EssAdminStatus |
-| SSID Number of Clients | AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations |
-| AP diassociation | AIRESPACE-WIRELESS-MIB::bsnAPDisassociated, CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated |
-| Channel Changed [^2] | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged |
-| DFS Radar Detection | AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected |
+
+
+
+## SNMP MIBs what is using
+| Monitoring Item                      | SNMP MIBs                                                                                        |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| AP Name                              | AIRESPACE-WIRELESS-MIB::bsnAPName                                                                |
+| AP Channel Number (2.4GHz)           | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber                                                  |
+| AP Channel Number (5GHz)             | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber <br> + CISCO-LWAPP-AP-MIB::cLApExtensionChannels |
+| AP Channel Bandwidth (5GHz)          | CISCO-LWAPP-AP-MIB::cLAp11ChannelBandwidth                                                       |
+| AP Channel Utilization (2.4GHz/5GHz) | AIRESPACE-WIRELESS-MIB::bsnAPIfLoadChannelUtilization                                            |
+| AP Operation Status                  | AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus                                                     |
+| AP Serial Number                     | AIRESPACE-WIRELESS-MIB::bsnAPSerialNumber                                                        |
+| AP Software Version                  | AIRESPACE-WIRELESS-MIB::bsnAPSoftwareVersion                                                     |
+| AP Tx Power Level (2.4GHz/5GHz)      | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyTxPowerLevel                                                   |
+| Current Number of AP                 | CISCO-LWAPP-AP-MIB::cLApGlobalAPConnectCount.0                                                   |
+| Number of APs Supported              | CISCO-LWAPP-AP-MIB::cLApGlobalMaxApsSupported.0                                                  |
+| HA SSO status                        | CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent                                                      |
+| Mobility Member Status (Control)     | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus                            |
+| Mobility Member Status (Data)        | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus                            |
+| Rouge AP Count                       | AIRESPACE-WIRELESS-MIB::bsnRogueAPDot11MacAddress                                                |
+| Rogue Client Count                   | AIRESPACE-WIRELESS-MIB::bsnRogueClientDot11MacAddress                                            |
+| SSID Administrative Status           | AIRESPACE-WIRELESS-MIB::bsnDot11EssAdminStatus                                                   |
+| SSID Number of Clients               | AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations                                        |
+| AP diassociation                     | AIRESPACE-WIRELESS-MIB::bsnAPDisassociated, CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated           |
+| Channel Changed [^2]                 | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged                                               |
+| DFS Radar Detection                  | AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected                                                  |
 
 [^2]: trigger is disabled as default
 
@@ -80,3 +83,49 @@ The template uses just OID and Standard MIB. No need to install vendor MIB. Plea
 
 > [!IMPORTANT]
 The test is only done in small lab environments. In a large environment, monitor the CPU utilization of the Wireless Controller in case SNMP consumes too many resources.
+
+
+## Dicovery rules
+| Name | Description | Type | Key and additional info |
+| ------- | -------| -------| -------|
+| bsnAPTable | Enumerate Access Point and create prototype for each | SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPName <br> 1h|
+| cLMobilityGroupMembersOperEntry | Enumurate Mobility Group Member and createprotoype for each | SNMP Agent | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperNodeAddress <br> 1h|
+| cLWlanSsid | Enumerate SSID and create prototype for each | SNMP Agent | CISCO-LWAPP-WLAN-MIB::cLWlanSsid <br> 1h |
+
+
+## Items collected
+| Name | Description | Type | Key and additional info |
+| ------- | -------| -------| -------|
+| AP Name                              |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPName <br> Update: 1h  |
+| AP Channel Number (2.4GHz)           |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber <br> Update: 15min   |
+| AP Channel Number (5GHz)             |Chennel bonding is supported| SNMP Agent |  AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber <br> + CISCO-LWAPP-AP-MIB::cLApExtensionChannels <br> Update: 15min|
+| AP Channel Bandwidth (5GHz)          |-| SNMP Agent | CISCO-LWAPP-AP-MIB::cLAp11ChannelBandwidth    <br> Update: 15min    |
+| AP Channel Utilization (2.4GHz/5GHz) |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPIfLoadChannelUtilization  <br> Update: 15min |
+| AP Operation Status                  |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus  <br> Update: 15min|
+| AP Serial Number                     |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPSerialNumber <br> Update: 24h |
+| AP Software Version                  |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPSoftwareVersion  <br> Update 1h |
+| AP Tx Power Level (2.4GHz/5GHz)      |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnAPIfPhyTxPowerLevel <br> Update: 15min|
+| Current Number of AP                 |-| SNMP Agent | CISCO-LWAPP-AP-MIB::cLApGlobalAPConnectCount.0 <br> Update: 1min |
+| Number of APs Supported              |-| SNMP Agent | CISCO-LWAPP-AP-MIB::cLApGlobalMaxApsSupported.0  <br> Update: 15min |
+| HA SSO status                        |-| SNMP Agent | CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent <br> Update: 15min|
+| Mobility Member Status (Control)     |-| SNMP Agent | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus <br> Update: 1min|
+| Mobility Member Status (Data)        |-| SNMP Agent | CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus  <br> Update: 1min |
+| Rouge AP Count                       |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnRogueAPDot11MacAddress <br> Update: 15min |
+| Rogue Client Count                   |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnRogueClientDot11MacAddress  <br> Update: 15min|
+| SSID Administrative Status           |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnDot11EssAdminStatus <br> Update: 1min |
+| SSID Number of Clients               |-| SNMP Agent | AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations <br> Update: 1min|
+| AP diassociation                     |-| SNMP Trap | AIRESPACE-WIRELESS-MIB::bsnAPDisassociated <br> CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated 
+| Channel Changed [^2]                 |-| SNMP Trap | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged |
+| DFS Radar Detection                  |-| SNMP Trap | AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected  |
+
+##  Triggers
+| Name | Description | Expression | Priority |
+| ------- | -------| -------| -------|
+|AP Name: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Disjoined|Problem trigger TrapOID<br>AIRESPACE-WIRELESS-MIB::bsnAPDisassociated<br><br>Recovery trigger TrapOID<br>CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated<br><br>Tag "APNAME" from<br>AIRESPACE-WIRELESS-MIB::bsnAPName (problem)<br>CISCO-LWAPP-AP-MIB::cLApName (recovery)|Problem expression<br><pre>find(/Cisco Catalyst 9800 by SNMP/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$\|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","14179\.2\.6\.3\.8")=1</pre> Recovery expression<br><pre>find(/Cisco Catalyst 9800 by SNMP/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$\|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","9\.9\.513\.0\.4")=1</pre> | Warning|
+|Channel Updated Trap on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Primaly Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.6\.2\.23\..*\=\s(.*)",\1)}|AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged<br><br>APNAME<br>AIRESPACE-WIRELESS-MIB::bsnAPName<br><br>find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],86400)=1|Expression<br> <pre>find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.16")=1 </pre> |  Information|
+|DFS Detected on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.2\.1\.4\..*\=\s(.*)",\1)}|Trigger SNMP OID<br>AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected<br><br>APNAME<br>AIRESPACE-WIRELESS-MIB::bsnAPName<br><br>CHANNEL<br>AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber<br><br>find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],86400)=1| Expression<br> <pre>find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.81")=1</pre>|
+|HA Peer Hotstandby status changed |Track CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent| Expression <br> <pre>change(/Cisco Catalyst 9800 by SNMP/cLHaPeerHotStandbyEvent)<>0 </pre> |Warning|
+|Maxmimum AP join limit has reached|Trigger<br>CISCO-LWAPP-AP-MIB::cLApGlobalAPConnectCount.0<br>= CISCO-LWAPP-AP-MIB::cLApGlobalMaxApsSupported.0| Expression <br> <pre>last(/Cisco Catalyst 9800 by SNMP/cLApGlobalAPConnectCount)=last(/Cisco Catalyst 9800 by SNMP/cLApGlobalMaxApsSupported)</pre>|Average|
+|AP Operation Status changed {#APNAME} |This is tracking AIRESPACE-WIRELESS-MIB::bsnAPOperationStatus.<br>It will be useful when SNMP trap is not used.| Problem expression<br><pre>last(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}])=2 and last(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}],#1)<>last(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}],#2)</pre>Recovery expression<br><pre>find(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}],3,,"1")=1</pew>|Warning|
+|Channel Updated on {#APNAME} [^2]  |This is tracking AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber. <br>This trigger can catch channel update of both manual channel assignment and auto assignment. |Problem expression<br><pre>(nodata(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-24ghz-[{#APNAME}],900)=0 <br>or<br>nodata(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-cLApExtensionChannels-5ghz-[{#APNAME}],900)=0)<br><br>and<br><br>(change(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-24ghz-[{#APNAME}])<>0<br>or<br>change(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-cLApExtensionChannels-5ghz-[{#APNAME}])<>0)</pre>|Information|
+|Mobility Peer status down [{#MOBILITYPEER}]|Tracking CISCO-LWAPP-MOBILITY-MIB::cLMobilityGroupMembersOperControlPathStatus|Problem expression<br><pre>last(/Cisco Catalyst 9800 by SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}])=2<br>and<br>(last(/Cisco Catalyst 9800 by SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],#1)<>last(/Cisco Catalyst 9800 by SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],#2))</pre>Recovery expression<br><pre>find(/Cisco Catalyst 9800 by SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],600,,"1")=1</pre>|Warning|
