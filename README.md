@@ -25,6 +25,7 @@ snmp-server enable traps rf
 snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 ```
 
+
 ## Monitoring items
 | Monitoring Item  |SNMP MIBs |
 | ------------- | ------------- |
