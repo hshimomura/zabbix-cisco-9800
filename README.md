@@ -2,7 +2,7 @@
 Zabbix template for Cisco Catalyst 9800 Series Wireless Controllers
 
 ## What it is?
-This is a Zabbix template for [Cisco Catalyst 9800 Series Wireless Controllers](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html).
+This is a Zabbix template for [Cisco Catalyst 9800 Series Wireless Controllers](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html) using SNMP.
 It covers wireless monitoring like Wireless Client Count, AP Count, Radio utilization, Mobility tunnel status, and High Availability status.
 Please use the "Cisco IOS by SNMP" template or others to get general IOS-XE status like CPU utilization, Memory usage, or interface status.
 
@@ -24,9 +24,6 @@ snmp-server enable traps wireless bsnAutoRF
 snmp-server enable traps rf
 snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 ```
-
-
-
 
 
 ## SNMP MIBs used
@@ -69,9 +66,11 @@ The template uses just OID and Standard MIB. No need to install vendor MIBs. Ple
 
 [https://github.com/cisco/cisco-mibs](https://github.com/cisco/cisco-mibs)
 
+
 ## Screenshots
 ![Screenshot1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
 ![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
+
 
 ## Tested Environment
 - Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.3, RELEASE SOFTWARE (fc7)
@@ -115,6 +114,7 @@ The test is only done in small lab environments. In a large environment, monitor
 | AP diassociation                     |-| SNMP Trap | AIRESPACE-WIRELESS-MIB::bsnAPDisassociated <br> CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated 
 | Channel Changed                      |-| SNMP Trap | AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged |
 | DFS Radar Detection                  |-| SNMP Trap | AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected  |
+
 
 ##  Triggers
 | Name | Description | Expression | Priority |
