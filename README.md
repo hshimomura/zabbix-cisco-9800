@@ -1,4 +1,4 @@
-# zabbix-cisco9800
+# zabbix-cisco-9800
 Zabbix template for Cisco Catalyst 9800 Series Wireless Controllers
 
 ## What it is?
