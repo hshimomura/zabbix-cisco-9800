@@ -1,5 +1,6 @@
 # zabbix-cisco-9800
-Zabbix template for Cisco Catalyst 9800 Series Wireless Controllers
+Zabbix template for Cisco Catalyst 9800 Series Wireless Controllers. <br>
+Japanese version is [here](README-ja.md)
 
 ## What it is?
 This is a Zabbix template for [Cisco Catalyst 9800 Series Wireless Controllers](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html) using SNMP.
