@@ -532,10 +532,10 @@ zabbix_export:
         - uuid: 5847c3ef43a849f0930943331339ecb2
           name: cLWlanSsid
           type: SNMP_AGENT
-          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.9.9.512.1.1.1.1.4]'
+          snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.9.9.512.1.1.1.1.3]'
           key: cLWlanSsid
           delay: 1h
-          description: 'CISCO-LWAPP-WLAN-MIB::cLWlanSsid'
+          description: 'CISCO-LWAPP-WLAN-MIB::cLWlanProfileName'
           item_prototypes:
             - uuid: 0995145307004624a54590732c43296d
               name: 'WLAN - {#SNMPVALUE} Administrative Status'
