@@ -530,10 +530,10 @@ zabbix_export:
                   return JSON.stringify(obj);
                   
         - uuid: 5847c3ef43a849f0930943331339ecb2
-          name: cLWlanSsid
+          name: cLWlanProfileName
           type: SNMP_AGENT
           snmp_oid: 'discovery[{#SNMPVALUE},1.3.6.1.4.1.9.9.512.1.1.1.1.3]'
-          key: cLWlanSsid
+          key: cLWlanProfileName
           delay: 1h
           description: 'CISCO-LWAPP-WLAN-MIB::cLWlanProfileName'
           item_prototypes:
