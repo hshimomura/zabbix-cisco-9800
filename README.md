@@ -2,6 +2,10 @@
 Zabbix template for Cisco Catalyst 9800 Series Wireless Controllers. <br>
 Japanese version is [here](README-ja.md)
 
+### Added on 6th Aug 2025
+The template is marged with [Zabbix Community Template](https://github.com/zabbix/community-templates) repository. It is changed to archived status.
+
+
 ## What it is?
 This is a Zabbix template for [Cisco Catalyst 9800 Series Wireless Controllers](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html) using SNMP.
 It covers wireless monitoring like Wireless Client Count, AP Count, Radio utilization, Mobility tunnel status, and High Availability status.
