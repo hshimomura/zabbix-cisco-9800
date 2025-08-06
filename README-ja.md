@@ -3,6 +3,9 @@
 
 Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプレート
 
+### 2025年8月6日追記
+本件は [Zabbix Community Template repository](https://github.com/zabbix/community-templates) にマージされましたので、アーカイブステータスに変更します。
+
 ## これは何ですか？
 
 これは、[Cisco Catalyst 9800シリーズ ワイヤレスLANコントローラ](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html)用のZabbixテンプレートです。SNMPを使用して、無線クライアント数、AP数、ラジオ利用率、モビリティトンネルの状態、ハイアベイラビリティの状態などの無線監視を可能にします。CPU使用率、メモリ使用量、インターフェース状態などの一般的なIOS-XEデバイスのステータスはCisco IOS by SNMP」テンプレートやその他のテンプレートを使用して取得してください。
