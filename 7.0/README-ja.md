@@ -2,13 +2,14 @@
 Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプレート (RESTCONF版)<br>
 English version is [here](README.md)
 
-Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプレート (RESTCONF版)
-
 ## 目的
 Cisco は IOS XE 17.18.2 から、レガシーかつ安全でない機能／プロトコルを段階的に廃止し、より安全な代替手段への移行を促しています。
 Zabbix で使用する SNMPv2についても SNMPv3への移行が求められています。
 SNMPv3は既にZabbixでサポートされており、従来のCisco Catalyst 9800 for SNMPでも動作しますが、暗号化通信であるSNMPv3への移行に伴い、情報取得速度が遅くなる症状がアクセスポイント数台の環境でも既に確認されています。またCisco はSNMPへの開発をほぼ停止しており、今後の監視系の項目はNETCONF/RESTCONF/gRPC等のストリーミングテレメトリの利用を推奨しています。
 本zabbix template については、来る管理系トラフィック全暗号化の時代に備え、機能の大多数をRESTCONFに移行しました。一部のリアルタイム通知が必要な項目はZabbixでリアルタイムに受けられるストリーミングテレメトリの仕組みがないため、SNMP Trap を継続利用しています。
+
+> [!NOTE]
+> このテンプレートは無線LANの監視項目に特化しており、CPU utilization, Memory utilization, interface stats については、"Cisco IOS by SNMP" と同時に使用することを想定しています。
 
 ### 参考URL
 Release Notes for Cisco Catalyst 9800 Series Wireless Controller, Cisco IOS XE 17.18.2
