@@ -239,7 +239,7 @@ zabbix_export:
                 APNAME
                 AIRESPACE-WIRELESS-MIB::bsnAPName
                 
-                find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],86400)=1
+                find(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],86400)=1
               manual_close: 'YES'
         - uuid: 52c4ab29287143fa86e287615f4e1b06
           name: 'SNMP Trap - RadarChannelDetected'
@@ -268,7 +268,7 @@ zabbix_export:
                 CHANNEL
                 AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber
                 
-                find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],86400)=1
+                find(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],86400)=1
               type: MULTIPLE
               manual_close: 'YES'
         - uuid: 9546fd2ac99f486b9ef685886d409523

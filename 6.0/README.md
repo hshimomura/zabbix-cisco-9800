@@ -9,14 +9,14 @@ The template is marged with [Zabbix Community Template](https://github.com/zabbi
 ## What it is?
 This is a Zabbix template for [Cisco Catalyst 9800 Series Wireless Controllers](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html) using SNMP.
 It covers wireless monitoring like Wireless Client Count, AP Count, Radio utilization, Mobility tunnel status, and High Availability status.
-Please use the "Cisco IOS by SNMP" template or others to get general IOS-XE status like CPU utilization, Memory usage, or interface status.
+Please use the "Cisco IOS by SNMP" template or others to get general IOS XE status like CPU utilization, Memory usage, or interface status.
 
 
 ## Requirements
 - Cisco Catalyst 9800 Series Wireless Controller and supported Access Point
   - [Embedded Wireless Controller for Catalyst Access Point](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html) doesn't work [^1] 
   - Other controllers, including [Cisco Catalyst 9800-CL Wireless Controller for Cloud](https://www.cisco.com/c/en/us/products/collateral/wireless/catalyst-9800-cl-wireless-controller-cloud/nb-06-cat9800-cl-cloud-wirel-data-sheet-ctp-en.html) may work
-- IOS-XE 17.11 or later software image to get many wireless SNMP OIDs like AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations
+- IOS XE 17.11 or later software image to get many wireless SNMP OIDs like AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations
 - SNMP and SNMP trap configuration on Catalyst 9800 WLC
 - Zabbix 6.0 or later (tested on 6.0.29)
 [^1]: Embedded Wireless Controller (EWC) does not support SNMP and does not implement the SNMP MIBs of Cisco Catalyst 9800 Series Wireless Controllers, although EWC might respond to some of the object identifiers (OIDs). [Configuration guide](https://www.cisco.com/c/en/us/td/docs/wireless/controller/ewc/17-6/config-guide/ewc_cg_17_6/new_configuration_model.html)

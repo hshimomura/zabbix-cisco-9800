@@ -19,7 +19,7 @@ https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/17-18/release-not
 ## Requirements
 
 - Cisco Catalyst 9800 Series Wireless LAN Controller
-  - RESTCONF must be enabled (IOS-XE 16.10 or later recommended)
+  - RESTCONF must be enabled (IOS XE 16.10 or later recommended)
   - HTTP(S) Server must be enabled
 - Zabbix 7.0 or later
 

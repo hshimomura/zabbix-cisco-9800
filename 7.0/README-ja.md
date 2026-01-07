@@ -19,7 +19,7 @@ https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/17-18/release-not
 ## 要件
 
 - Cisco Catalyst 9800シリーズ ワイヤレスLANコントローラ
-  - RESTCONFが有効化されていること (IOS-XE 16.10以降推奨)
+  - RESTCONFが有効化されていること (IOS XE 16.10以降推奨)
   - HTTP(S) サーバーが有効化されていること
 - Zabbix 7.0以降
 

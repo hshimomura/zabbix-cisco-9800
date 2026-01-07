@@ -9,7 +9,7 @@ Please select the appropriate template version according to your Zabbix version 
 
 | Directory | Template Description | Target Zabbix Version | Monitoring Method |
 | :--- | :--- | :--- | :--- |
-| **[7.0](./7.0/README.md)** | **Recommended**: Next-generation template using RESTCONF.<br>Addresses the SNMP deprecation policy in IOS-XE 17.18 and later. | Zabbix 7.0 or later | RESTCONF (Main) + SNMP Trap |
+| **[7.0](./7.0/README.md)** | **Recommended**: Next-generation template using RESTCONF.<br>Addresses the SNMP deprecation policy in IOS XE 17.18 and later. | Zabbix 7.0 or later | RESTCONF (Main) + SNMP Trap |
 | **[6.0](./6.0/README.md)** | Traditional SNMP-based template.<br>For maintaining existing environments. | Zabbix 6.0 or later | SNMP |
 
 > [!NOTE]

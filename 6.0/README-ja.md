@@ -8,14 +8,14 @@ Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプ�
 
 ## これは何ですか？
 
-これは、[Cisco Catalyst 9800シリーズ ワイヤレスLANコントローラ](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html)用のZabbixテンプレートです。SNMPを使用して、無線クライアント数、AP数、ラジオ利用率、モビリティトンネルの状態、ハイアベイラビリティの状態などの無線監視を可能にします。CPU使用率、メモリ使用量、インターフェース状態などの一般的なIOS-XEデバイスのステータスはCisco IOS by SNMP」テンプレートやその他のテンプレートを使用して取得してください。
+これは、[Cisco Catalyst 9800シリーズ ワイヤレスLANコントローラ](https://www.cisco.com/site/us/en/products/networking/wireless/wireless-lan-controllers/catalyst-9800-series/index.html)用のZabbixテンプレートです。SNMPを使用して、無線クライアント数、AP数、ラジオ利用率、モビリティトンネルの状態、ハイアベイラビリティの状態などの無線監視を可能にします。CPU使用率、メモリ使用量、インターフェース状態などの一般的なIOS XEデバイスのステータスはCisco IOS by SNMP」テンプレートやその他のテンプレートを使用して取得してください。
 
 ## 要件
 
 - Cisco Catalyst 9800シリーズ ワイヤレスLANコントローラとサポートされているアクセスポイント
   - [Cisco Embedded Wireless Controller on Catalyst Access Points](https://www.cisco.com/c/en/us/products/wireless/embedded-wireless-controller-on-catalyst-access-points/index.html)は動作しません[^1]
   - [Cisco Catalyst 9800-CL Wireless Controller for Cloud](https://www.cisco.com/c/en/us/products/collateral/wireless/catalyst-9800-cl-wireless-controller-cloud/nb-06-cat9800-cl-cloud-wirel-data-sheet-ctp-en.html) を含む他のCatalyst 9800 シリーズのワイヤレスLANコントローラはSNMPをサポートします
-- 無線SNMP OIDを取得のため、IOS-XE 17.11以降のソフトウェアイメージが必要です。（例：AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations）
+- 無線SNMP OIDを取得のため、IOS XE 17.11以降のソフトウェアイメージが必要です。（例：AIRESPACE-WIRELESS-MIB::bsnDot11EssNumberOfMobileStations）
 - Catalyst 9800 WLCでのSNMPおよびSNMPトラップの設定
 - Zabbix 6.0以降（6.0.29でテスト済み）
 
