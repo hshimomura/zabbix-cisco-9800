@@ -1,4 +1,6 @@
 # zabbix-cisco-9800 (RESTCONF)
+Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプレート (RESTCONF版)<br>
+English version is [here](README.md)
 
 Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプレート (RESTCONF版)
 
@@ -32,11 +34,18 @@ configure terminal
 end
 ```
 
-SNMP Trapを使用する場合の設定例:
+SNMP Trapを使用する場合の設定例 (SNMPv3推奨):
 ```cisco
+! Trapの有効化
 snmp-server enable traps wireless bsnAutoRF
 snmp-server enable traps rf
-snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
+
+! SNMPv3 グループとユーザーの作成 (AuthPrivモード)
+snmp-server group [SNMPv3 Group] v3 priv
+snmp-server user [SNMPv3 Username] [SNMPv3 Group] v3 auth sha [AUTH_PASS] priv aes 128 [PRIV_PASS]
+
+! Trap送信先の設定
+snmp-server host [ZABBIX IP ADDRESS] version 3 priv [SNMPv3 Username]
 ```
 
 ## 使用方法
