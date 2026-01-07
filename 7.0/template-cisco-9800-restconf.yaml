@@ -60,7 +60,7 @@ zabbix_export:
           username: '{$RESTCONF.USER}'
           password: '{$RESTCONF.PASS}'
           description: 'Cisco-IOS-XE-ha-oper:ha-oper-data/ha-infra'
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-ha-oper:ha-oper-data/ha-infra'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-ha-oper:ha-oper-data/ha-infra'
           headers:
             - name: accept
               value: application/yang-data+json
@@ -83,7 +83,7 @@ zabbix_export:
         - uuid: 78bd87736fe14551984d153f570b23cc
           name: 'CPU Utilization'
           type: HTTP_AGENT
-          key: 'cisco.iosxe.cpu.util[five-seconds]'
+          key: 'cisco.iosxe.cpu.util[one-minute]'
           authtype: BASIC
           username: '{$RESTCONF.USER}'
           password: '{$RESTCONF.PASS}'
@@ -91,8 +91,8 @@ zabbix_export:
           preprocessing:
             - type: JSONPATH
               parameters:
-                - '$.[''Cisco-IOS-XE-process-cpu-oper:cpu-utilization''][''five-seconds'']'
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-process-cpu-oper:cpu-usage/cpu-utilization'
+                - '$.[''Cisco-IOS-XE-process-cpu-oper:one-minute'']'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-process-cpu-oper:cpu-usage/cpu-utilization/one-minute'
           headers:
             - name: Accept
               value: application/yang-data+json
@@ -120,7 +120,7 @@ zabbix_export:
                   } else {
                       return 0;
                   }
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-memory-oper:memory-statistics/memory-statistic'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-memory-oper:memory-statistics/memory-statistic'
           headers:
             - name: Accept
               value: application/yang-data+json
@@ -135,7 +135,7 @@ zabbix_export:
           username: '{$RESTCONF.USER}'
           password: '{$RESTCONF.PASS}'
           description: 'Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement'
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement'
           headers:
             - name: accept
               value: application/yang-data+json
@@ -150,7 +150,7 @@ zabbix_export:
           username: '{$RESTCONF.USER}'
           password: '{$RESTCONF.PASS}'
           description: 'Cisco-IOS-XE-wireless-mobility-oper:mobility-node-data'
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-mobility-oper:mobility-oper-data/mobility-node-data'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-wireless-mobility-oper:mobility-oper-data/mobility-node-data'
           headers:
             - name: accept
               value: application/yang-data+json
@@ -167,7 +167,7 @@ zabbix_export:
             - type: JSONPATH
               parameters:
                 - '$.[''Cisco-IOS-XE-wireless-rogue-oper:total-count'']'
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-count'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-count'
           headers:
             - name: accept
               value: application/yang-data+json
@@ -184,7 +184,7 @@ zabbix_export:
             - type: JSONPATH
               parameters:
                 - '$.[''Cisco-IOS-XE-wireless-rogue-oper:total-client-count'']'
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-client-count'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-client-count'
           headers:
             - name: accept
               value: application/yang-data+json
@@ -192,6 +192,7 @@ zabbix_export:
           name: 'WLC AP Master'
           type: HTTP_AGENT
           key: cisco.rrm.stats.master
+          delay: 15m
           history: '0'
           value_type: TEXT
           trends: '0'
@@ -199,7 +200,7 @@ zabbix_export:
           username: '{$RESTCONF.USER}'
           password: '{$RESTCONF.PASS}'
           description: 'Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map'
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map'
           headers:
             - name: accept
               value: application/yang-data+json
@@ -214,10 +215,93 @@ zabbix_export:
           username: '{$RESTCONF.USER}'
           password: '{$RESTCONF.PASS}'
           description: 'Cisco-IOS-XE-wireless-wlan-global-oper:wlan-global-oper-data/wlan-info'
-          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-wlan-global-oper:wlan-global-oper-data/wlan-info'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-wireless-wlan-global-oper:wlan-global-oper-data/wlan-info'
           headers:
             - name: accept
               value: application/yang-data+json
+        - uuid: c181e23106714997a8719d158c57ee11
+          name: 'SNMP Trap - Channel Changed'
+          type: SNMP_TRAP
+          key: 'snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"]'
+          delay: '0'
+          value_type: LOG
+          trends: '0'
+          description: 'AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged'
+          triggers:
+            - uuid: 0005659153154b9d92f08163279ee1be
+              expression: 'find(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.16")=1'
+              recovery_mode: NONE
+              name: 'Channel Updated Trap on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Primaly Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.6\.2\.23\..*\=\s(.*)",\1)}'
+              priority: INFO
+              description: |
+                AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged
+                
+                APNAME
+                AIRESPACE-WIRELESS-MIB::bsnAPName
+                
+                find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],86400)=1
+              manual_close: 'YES'
+        - uuid: 52c4ab29287143fa86e287615f4e1b06
+          name: 'SNMP Trap - RadarChannelDetected'
+          type: SNMP_TRAP
+          key: 'snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"]'
+          delay: '0'
+          value_type: LOG
+          trends: '0'
+          description: 'AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected'
+          triggers:
+            - uuid: a59c7d33f9a64f03a6aa3280c86319c8
+              expression: 'find(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],,,"SNMPv2-SMI::enterprises.14179.2.6.3.81")=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],3600)=0'
+              correlation_mode: TAG_VALUE
+              correlation_tag: APNAME
+              name: 'DFS Detected on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.2\.1\.4\..*\=\s(.*)",\1)}'
+              priority: INFO
+              description: |
+                Trigger SNMP OID
+                AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected
+                
+                APNAME
+                AIRESPACE-WIRELESS-MIB::bsnAPName
+                
+                CHANNEL
+                AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber
+                
+                find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],86400)=1
+              type: MULTIPLE
+              manual_close: 'YES'
+        - uuid: 9546fd2ac99f486b9ef685886d409523
+          name: 'SNMP Trap - AP disassociation'
+          type: SNMP_TRAP
+          key: 'snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$]'
+          delay: '0'
+          value_type: LOG
+          trends: '0'
+          description: |
+            AIRESPACE-WIRELESS-MIB::bsnAPDisassociated
+            CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated
+          triggers:
+            - uuid: 0236ba6a0cbb47f88a96625a272698e7
+              expression: 'find(/Cisco Catalyst 9800 by restconf/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","14179\\.2\\.6\\.3\\.8")=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'find(/Cisco Catalyst 9800 by restconf/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","9\\.9\\.513\\.0\\.4")=1'
+              correlation_mode: TAG_VALUE
+              correlation_tag: APNAME
+              name: 'AP Name: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Disjoined'
+              priority: WARNING
+              description: |
+                Problem trigger TrapOID
+                AIRESPACE-WIRELESS-MIB::bsnAPDisassociated
+                
+                Recovery trigger TrapOID
+                CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated
+                
+                Tag "APNAME" from
+                AIRESPACE-WIRELESS-MIB::bsnAPName (problem)
+                CISCO-LWAPP-AP-MIB::cLApName (recovery)
+              type: MULTIPLE
+              manual_close: 'YES'
       discovery_rules:
         - uuid: 4958e29747804b7a843e5795b14071c4
           name: 'Mobility Node Discovery'
@@ -433,32 +517,10 @@ zabbix_export:
                     - '$.[''Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})].noise.noise[''noise-data''][0].noise.first()'
               master_item:
                 key: cisco.iosxe.rrm.master
-            - uuid: 2b1a018bc0e5495e98bf1388c6b2d133
-              name: 'AP {#AP.NAME} ({#FREQ.NAME}): RX Utilization'
-              type: DEPENDENT
-              key: 'rrm.rx.util[{#WTP.MAC},{#SLOT.ID}]'
-              delay: '0'
-              preprocessing:
-                - type: JSONPATH
-                  parameters:
-                    - '$.[''Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})].load[''rx-util-percentage''].first()'
-              master_item:
-                key: cisco.iosxe.rrm.master
-            - uuid: f89e8bffb96e467aaa7845d4b1391e3e
-              name: 'AP {#AP.NAME} ({#FREQ.NAME}): TX Utilization'
-              type: DEPENDENT
-              key: 'rrm.tx.util[{#WTP.MAC},{#SLOT.ID}]'
-              delay: '0'
-              preprocessing:
-                - type: JSONPATH
-                  parameters:
-                    - '$.[''Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})].load[''tx-util-percentage''].first()'
-              master_item:
-                key: cisco.iosxe.rrm.master
           timeout: 10s
           parameters:
             - name: base_url
-              value: '{$RESTCONF.URL}'
+              value: 'https://{HOST.CONN}/restconf/data'
             - name: pass
               value: '{$RESTCONF.PASS}'
             - name: user
@@ -494,7 +556,6 @@ zabbix_export:
         - macro: '{$RESTCONF.PASS}'
           value: Cisco123
         - macro: '{$RESTCONF.URL}'
-          value: 'https://wlc1.ioslab.jp/restconf/data'
-          description: 'https://{HOST.CONN}/restconf/data'
+          value: 'https://{HOST.CONN}/restconf/data'
         - macro: '{$RESTCONF.USER}'
           value: admin
