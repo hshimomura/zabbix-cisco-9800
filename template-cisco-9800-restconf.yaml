@@ -1,0 +1,500 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: 36bff6c29af64692839d077febfc7079
+      name: 'Templates/Network devices'
+  templates:
+    - uuid: 9ad700221fc44abfbf487472afa7ade9
+      template: 'Cisco Catalyst 9800 by restconf'
+      name: 'Cisco Catalyst 9800 by restconf'
+      groups:
+        - name: 'Templates/Network devices'
+      items:
+        - uuid: 27c818b04850469a8290434c7ce1b17c
+          name: 'HA Local State'
+          type: DEPENDENT
+          key: cisco.ha.local.state
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-ha-oper:ha-infra''][''ha-state'']'
+            - type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '86400'
+          master_item:
+            key: cisco.ha.stats.master
+        - uuid: 9ac4e07ae4e54d18b41c47f56e114f8b
+          name: 'HA Peer State'
+          type: DEPENDENT
+          key: cisco.ha.peer.state
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-ha-oper:ha-infra''][''peer-state'']'
+            - type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '86400'
+          master_item:
+            key: cisco.ha.stats.master
+          triggers:
+            - uuid: e8428fb3f86748b4bacce1449d49209b
+              expression: 'last(/Cisco Catalyst 9800 by restconf/cisco.ha.peer.state) <> "db-rf-standby-hot"'
+              name: 'HA Peer is NOT Standby Hot (Risk of HA Failure)'
+              priority: HIGH
+              description: 'The peer is not in the ''Standby Hot'' state (e.g., Disabled, Unknown, Standby Cold). Proper failover may not be possible in the event of a failure'
+              manual_close: 'YES'
+        - uuid: 6f9a21d2d228432bbe89ca85c3ef36b9
+          name: 'WLC HA Stats Master'
+          type: HTTP_AGENT
+          key: cisco.ha.stats.master
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-ha-oper:ha-oper-data/ha-infra'
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-ha-oper:ha-oper-data/ha-infra'
+          headers:
+            - name: accept
+              value: application/yang-data+json
+        - uuid: 25200264ec524ea0b6831a671fc98888
+          name: 'HA Last Switchover Reason'
+          type: DEPENDENT
+          key: cisco.ha.switchover.reason
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-ha-oper:ha-infra''][''last-switchover-reason'']'
+            - type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - '86400'
+          master_item:
+            key: cisco.ha.stats.master
+        - uuid: 78bd87736fe14551984d153f570b23cc
+          name: 'CPU Utilization'
+          type: HTTP_AGENT
+          key: 'cisco.iosxe.cpu.util[five-seconds]'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-process-cpu-oper:cpu-usage/cpu-utilization'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-process-cpu-oper:cpu-utilization''][''five-seconds'']'
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-process-cpu-oper:cpu-usage/cpu-utilization'
+          headers:
+            - name: Accept
+              value: application/yang-data+json
+        - uuid: a68e3028aaa743c784e0951dd1799aab
+          name: 'Memory Utilization'
+          type: HTTP_AGENT
+          key: cisco.iosxe.memory.util
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-memory-oper:memory-statistics/memory-statistic'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-memory-oper:memory-statistic''][?(@.name == ''Processor'')].first()'
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  var obj = JSON.parse(value);
+                  var total = parseFloat(obj['total-memory']);
+                  var used = parseFloat(obj['used-memory']);
+                  
+                  if (total > 0) {
+                      return (used / total * 100).toFixed(2);
+                  } else {
+                      return 0;
+                  }
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-memory-oper:memory-statistics/memory-statistic'
+          headers:
+            - name: Accept
+              value: application/yang-data+json
+        - uuid: 14ae264ac128429f936f4e6cb8140c3e
+          name: 'WLC RRM Stats Master'
+          type: HTTP_AGENT
+          key: cisco.iosxe.rrm.master
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement'
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement'
+          headers:
+            - name: accept
+              value: application/yang-data+json
+        - uuid: 3b0d822db8db4c8b9e99238232d73b9e
+          name: 'WLC Mobility Stats Master'
+          type: HTTP_AGENT
+          key: cisco.mobility.stats.master
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-wireless-mobility-oper:mobility-node-data'
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-mobility-oper:mobility-oper-data/mobility-node-data'
+          headers:
+            - name: accept
+              value: application/yang-data+json
+        - uuid: 3596528aa4d1489d80c6d2e09b2d780f
+          name: 'Rogue AP: Total Count'
+          type: HTTP_AGENT
+          key: cisco.rogue.ap.total
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-count'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-wireless-rogue-oper:total-count'']'
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-count'
+          headers:
+            - name: accept
+              value: application/yang-data+json
+        - uuid: 687c8809fa374bfabe307abfb27d5e18
+          name: 'Rogue AP: Total Client Count'
+          type: HTTP_AGENT
+          key: cisco.rogue.client.total
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-client-count'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-wireless-rogue-oper:total-client-count'']'
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-client-count'
+          headers:
+            - name: accept
+              value: application/yang-data+json
+        - uuid: d20fb16e3174428a85eb45fddbd1c121
+          name: 'WLC AP Master'
+          type: HTTP_AGENT
+          key: cisco.rrm.stats.master
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map'
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map'
+          headers:
+            - name: accept
+              value: application/yang-data+json
+        - uuid: c34798e5fae6438b816ef27908220a15
+          name: 'WLC WLAN Stats Master'
+          type: HTTP_AGENT
+          key: cisco.wlan.stats.master
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-wireless-wlan-global-oper:wlan-global-oper-data/wlan-info'
+          url: '{$RESTCONF.URL}/Cisco-IOS-XE-wireless-wlan-global-oper:wlan-global-oper-data/wlan-info'
+          headers:
+            - name: accept
+              value: application/yang-data+json
+      discovery_rules:
+        - uuid: 4958e29747804b7a843e5795b14071c4
+          name: 'Mobility Node Discovery'
+          type: DEPENDENT
+          key: cisco.mobility.discovery
+          delay: '0'
+          description: 'Cisco-IOS-XE-wireless-mobility-oper:mobility-node-data'
+          item_prototypes:
+            - uuid: 59d03f28650f443f82ef26f66c48c827
+              name: 'Mobility Node {#NODE.IP}: Link Status'
+              type: DEPENDENT
+              key: 'cisco.mobility.link.status[{#NODE.IP}]'
+              delay: '0'
+              value_type: TEXT
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[''Cisco-IOS-XE-wireless-mobility-oper:mobility-node-data''][?(@[''node-ip''] == ''{#NODE.IP}'')][''ulink-status''].first()'
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - '3600'
+              master_item:
+                key: cisco.mobility.stats.master
+              trigger_prototypes:
+                - uuid: 707a88e3c2944f9494045cf0040b39c6
+                  expression: 'last(/Cisco Catalyst 9800 by restconf/cisco.mobility.link.status[{#NODE.IP}]) <> "up"'
+                  name: 'Mobility Tunnel to {#NODE.IP} is Down'
+                  manual_close: 'YES'
+          master_item:
+            key: cisco.mobility.stats.master
+          lld_macro_paths:
+            - lld_macro: '{#GROUP.NAME}'
+              path: '$.[''group-name'']'
+            - lld_macro: '{#NODE.IP}'
+              path: '$.[''node-ip'']'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-wireless-mobility-oper:mobility-node-data'']'
+        - uuid: a2c85581f9ae41ff8dd5e1a4191d90cb
+          name: 'Radio Slot Discovery'
+          type: SCRIPT
+          key: cisco.rrm.discovery.named
+          delay: 1h
+          params: |
+            var params = JSON.parse(value);
+            
+            var url = params.base_url;
+            var user = params.user;
+            var pass = params.pass;
+            
+            var req = new HttpRequest();
+            req.addHeader('Accept: application/yang-data+json');
+            
+            // Basic認証ヘッダーの生成
+            var authString = btoa(user + ':' + pass);
+            req.addHeader('Authorization: Basic ' + authString);
+            
+            // -------------------------------------------------------
+            // 1. APリストの取得 (MACアドレス -> AP名)
+            // -------------------------------------------------------
+            var apListUrl = url + "/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map";
+            var apListRaw = req.get(apListUrl);
+            
+            if (req.getStatus() != 200) {
+                throw 'AP List Error: ' + req.getStatus();
+            }
+            
+            // -------------------------------------------------------
+            // 2. ラジオ情報の取得 (MAC + Slot -> 周波数帯)
+            // -------------------------------------------------------
+            var radioUrl = url + "/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/radio-oper-data";
+            var radioRaw = req.get(radioUrl);
+            
+            if (req.getStatus() != 200) {
+                throw 'Radio Data Error: ' + req.getStatus();
+            }
+            
+            // -------------------------------------------------------
+            // 3. RRM統計データの取得 (メインのループ対象)
+            // -------------------------------------------------------
+            var rrmDataUrl = url + "/Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement";
+            var rrmDataRaw = req.get(rrmDataUrl);
+            
+            if (req.getStatus() != 200) {
+                throw 'RRM Data Error: ' + req.getStatus();
+            }
+            
+            // -------------------------------------------------------
+            // データ結合と整形処理
+            // -------------------------------------------------------
+            var output = [];
+            try {
+                var apListJson = JSON.parse(apListRaw);
+                var radioJson  = JSON.parse(radioRaw);
+                var rrmDataJson = JSON.parse(rrmDataRaw);
+            
+                var apListData = apListJson["Cisco-IOS-XE-wireless-access-point-oper:ap-name-mac-map"] || [];
+                var radioData  = radioJson["Cisco-IOS-XE-wireless-access-point-oper:radio-oper-data"] || [];
+                var rrmData    = rrmDataJson["Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement"] || [];
+            
+                // Map 1: MACアドレス -> AP名
+                var nameMap = {};
+                apListData.forEach(function(ap) {
+                    nameMap[ap["wtp-mac"]] = ap["wtp-name"];
+                });
+            
+                // Map 2: MAC_Slot -> 周波数帯名
+                var bandMap = {};
+                radioData.forEach(function(rad) {
+                    var key = rad["wtp-mac"] + "_" + rad["radio-slot-id"];
+                    var bandRaw = rad["current-active-band"];
+                    
+                    var bandName = "Unknown";
+                    if (bandRaw === "dot11-2-dot-4-ghz-band") {
+                        bandName = "2.4GHz";
+                    } else if (bandRaw === "dot11-5-ghz-band") {
+                        bandName = "5GHz";
+                    } else if (bandRaw === "dot11-6-ghz-band") {
+                        bandName = "6GHz";
+                    } else {
+                        // radio-remote-lan などを拾った場合のケア
+                        bandName = "Other"; 
+                    }
+                    bandMap[key] = bandName;
+                });
+            
+                // メインループ: RRMデータを回してアイテム生成
+                rrmData.forEach(function(item) {
+                    var mac = item["wtp-mac"];
+                    var slot = item["radio-slot-id"];
+                    var apName = nameMap[mac] || mac;
+                    
+                    // バンドMapから動的に周波数を取得 (なければUnknown)
+                    var freq = bandMap[mac + "_" + slot] || "Unknown";
+            
+                    // "Other" や "Unknown" のスロットを除外したい場合はここで if(freq === "Other") return; 等を入れる
+            
+                    output.push({
+                        "{#AP.NAME}": apName,
+                        "{#WTP.MAC}": mac,
+                        "{#SLOT.ID}": slot.toString(),
+                        "{#FREQ.NAME}": freq
+                    });
+                });
+            
+            } catch (e) {
+                throw 'Parsing Error: ' + e;
+            }
+            
+            return JSON.stringify(output);
+          description: |
+            Functional Overview: Dynamically discovers and monitors radio slot statistics for Cisco Catalyst 9800 WLC Access Points (APs) using RESTCONF. This discovery rule automatically resolves AP names and actual operating frequency bands to generate human-readable item names.
+            
+            Key Features:
+            - AP Name Mapping:
+              Uses the configured "AP Name" for item generation instead of MAC addresses.
+            - Dynamic Band Mapping:
+              Detects the actual operating frequency band for each slot instead of assuming fixed assignments.
+            -  XOR Radio Support: Correctly identifies if Slot 0 is operating in 5GHz mode (e.g., Dual 5GHz).
+              Wi-Fi 6E Support: Automatically detects 6GHz bands on supported APs (e.g., Slot 2).
+            
+            Efficient Data Retrieval:
+            - Minimizes API calls by aggregating data from multiple endpoints within a single JavaScript execution.
+            
+            Generated LLD Macros:
+            - {#AP.NAME} : Access Point Name (e.g., AP-Tokyo-01)
+            - {#WTP.MAC} : AP MAC Address (Used as the unique key)
+            - {#SLOT.ID} : Radio Slot ID (0, 1, 2...)
+            - {#FREQ.NAME} : Operating Frequency Band (2.4GHz, 5GHz, 6GHz)
+            
+            RESTCONF Paths Used:
+            - Name Mapping: /Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map
+            - Band Mapping: /Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/radio-oper-data
+            - Statistics: /Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement
+            
+            Item Name Examples:
+            - AP AP-Tokyo-01 (5GHz): RX Utilization
+            - AP AP-Osaka-02 (6GHz): Client Count
+          item_prototypes:
+            - uuid: a31755cca0c74a83a03380ab3056aa23
+              name: 'AP {#AP.NAME} ({#FREQ.NAME}): Channel Utilization'
+              type: DEPENDENT
+              key: 'rrm.cca.util[{#WTP.MAC},{#SLOT.ID}]'
+              delay: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[''Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})].load[''cca-util-percentage''].first()'
+              master_item:
+                key: cisco.iosxe.rrm.master
+            - uuid: f6966d8a9c9c4f60b7751a583299b764
+              name: 'AP {#AP.NAME} ({#FREQ.NAME}): Client Count'
+              type: DEPENDENT
+              key: 'rrm.client.count[{#WTP.MAC},{#SLOT.ID}]'
+              delay: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[''Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})].load[''stations''].first()'
+              master_item:
+                key: cisco.iosxe.rrm.master
+            - uuid: 2e5ee889e0454851ac747788e1f07489
+              name: 'AP {#AP.NAME} ({#FREQ.NAME}): Noise Level'
+              type: DEPENDENT
+              key: 'rrm.noise[{#WTP.MAC},{#SLOT.ID}]'
+              delay: '0'
+              value_type: FLOAT
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[''Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})].noise.noise[''noise-data''][0].noise.first()'
+              master_item:
+                key: cisco.iosxe.rrm.master
+            - uuid: 2b1a018bc0e5495e98bf1388c6b2d133
+              name: 'AP {#AP.NAME} ({#FREQ.NAME}): RX Utilization'
+              type: DEPENDENT
+              key: 'rrm.rx.util[{#WTP.MAC},{#SLOT.ID}]'
+              delay: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[''Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})].load[''rx-util-percentage''].first()'
+              master_item:
+                key: cisco.iosxe.rrm.master
+            - uuid: f89e8bffb96e467aaa7845d4b1391e3e
+              name: 'AP {#AP.NAME} ({#FREQ.NAME}): TX Utilization'
+              type: DEPENDENT
+              key: 'rrm.tx.util[{#WTP.MAC},{#SLOT.ID}]'
+              delay: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[''Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})].load[''tx-util-percentage''].first()'
+              master_item:
+                key: cisco.iosxe.rrm.master
+          timeout: 10s
+          parameters:
+            - name: base_url
+              value: '{$RESTCONF.URL}'
+            - name: pass
+              value: '{$RESTCONF.PASS}'
+            - name: user
+              value: '{$RESTCONF.USER}'
+        - uuid: 61444ff60aff4b149f553b303e208293
+          name: 'WLAN SSID Discovery'
+          type: DEPENDENT
+          key: cisco.wlan.discovery
+          delay: '0'
+          description: 'Cisco-IOS-XE-wireless-wlan-global-oper:wlan-global-oper-data/wlan-info'
+          item_prototypes:
+            - uuid: e4dc8b7ce0b5492db9c7de36e4640f27
+              name: 'SSID {#WLAN.NAME}: Client Count'
+              type: DEPENDENT
+              key: 'cisco.wlan.client.count[{#WLAN.NAME}]'
+              delay: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[''Cisco-IOS-XE-wireless-wlan-global-oper:wlan-info''][?(@[''wlan-profile''] == ''{#WLAN.NAME}'')][''curr-clients-count''].first()'
+              master_item:
+                key: cisco.wlan.stats.master
+          master_item:
+            key: cisco.wlan.stats.master
+          lld_macro_paths:
+            - lld_macro: '{#WLAN.NAME}'
+              path: '$.[''wlan-profile'']'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-wireless-wlan-global-oper:wlan-info'']'
+      macros:
+        - macro: '{$RESTCONF.PASS}'
+          value: Cisco123
+        - macro: '{$RESTCONF.URL}'
+          value: 'https://wlc1.ioslab.jp/restconf/data'
+          description: 'https://{HOST.CONN}/restconf/data'
+        - macro: '{$RESTCONF.USER}'
+          value: admin
