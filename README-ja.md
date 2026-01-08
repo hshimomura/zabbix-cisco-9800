@@ -22,5 +22,11 @@ Zabbix のバージョンおよび監視方式（SNMP vs RESTCONF）に合わせ
 - [Zabbix 6.0 用 (SNMP 版) の詳細ドキュメント](./6.0/README-ja.md)
 
 ## スクリーンショット
-![スクリーンショット1](../screenshots/screenshot1.png)
-![スクリーンショット2](../screenshots/screenshot2.png)
+![スクリーンショット1](./screenshots/screenshot1.png)
+![スクリーンショット2](./screenshots/screenshot2.png)
+
+## ライセンス
+本プロジェクトは GNU General Public License v3.0 の下でライセンスされています。詳細は [LICENSE](LICENSE) ファイルを参照してください。
+
+## 著者
+Hiroki Shimomura

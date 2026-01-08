@@ -23,5 +23,11 @@ For detailed setup instructions and specifications for each version, please refe
 
 
 ## Screenshots
-![Screenshot1](../screenshots/screenshot1.png)
-![Screenshot2](../screenshots/screenshot2.png)
+![Screenshot1](./screenshots/screenshot1.png)
+![Screenshot2](./screenshots/screenshot2.png)
+
+## License
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## Author
+Hiroki Shimomura
