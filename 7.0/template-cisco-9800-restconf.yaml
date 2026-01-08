@@ -5,8 +5,38 @@ zabbix_export:
       name: 'Templates/Network devices'
   templates:
     - uuid: 9ad700221fc44abfbf487472afa7ade9
-      template: 'Cisco Catalyst 9800 by restconf'
-      name: 'Cisco Catalyst 9800 by restconf'
+      template: 'Cisco Catalyst 9800 RESTCONF'
+      name: 'Cisco Catalyst 9800 RESTCONF'
+      description: |
+        Zabbix Template for Cisco Catalyst 9800 Series Wireless Controller (RESTCONF version)
+        
+        OVERVIEW
+        This template is designed for modern Cisco Catalyst 9800 WLC environments, migrating monitoring from legacy SNMP polling to RESTCONF API.
+        This shift addresses performance issues often observed with SNMPv3 encryption and aligns with Cisco's recommendation to use streaming telemetry/APIs for monitoring.
+        
+        KEY FEATURES
+        - Performance & Security: Utilizes RESTCONF (HTTP Agent) for efficient data retrieval over HTTPS.
+        - High Availability (HA) Monitoring: Tracks SSO status, peer state (Standby Hot), and switchover reasons.
+        - Smart AP Radio Discovery: Dynamically detects and maps radio slots to their actual frequency bands (2.4GHz / 5GHz / 6GHz), supporting XOR radios and Wi-Fi 6E.
+        - WLAN/SSID Statistics: Monitors client counts per SSID.
+        - Rogue Monitoring: Tracks total counts of Rogue APs and clients.
+        - Hybrid Alerting: Uses SNMP Traps for real-time events (DFS Radar, AP Disassociation) while using RESTCONF for metrics.
+        
+        REQUIREMENTS
+        - Device: Cisco Catalyst 9800 Series (IOS XE 16.10 or later recommended)
+        - Configuration: "restconf" and "ip http secure-server" must be enabled
+        - Zabbix: Version 7.0 or later
+        
+        SETUP
+        1. Enable RESTCONF on the WLC.
+        2. Set the {$RESTCONF.USER} and {$RESTCONF.PASS} macros.
+        3. Ensure the host interface is configured correctly for connection.
+        
+        NOTE
+        While this template monitors WLC-specific resources (CPU/Memory via RESTCONF), it is recommended to use the standard "Cisco IOS by SNMP" template for monitoring physical network interfaces.
+        
+        AUTHOR
+        Hideaki Shimomura @hshimomura
       groups:
         - name: 'Templates/Network devices'
       items:
@@ -44,7 +74,7 @@ zabbix_export:
             key: cisco.ha.stats.master
           triggers:
             - uuid: e8428fb3f86748b4bacce1449d49209b
-              expression: 'last(/Cisco Catalyst 9800 by restconf/cisco.ha.peer.state) <> "db-rf-standby-hot"'
+              expression: 'last(/Cisco Catalyst 9800 RESTCONF/cisco.ha.peer.state) <> "db-rf-standby-hot"'
               name: 'HA Peer is NOT Standby Hot (Risk of HA Failure)'
               priority: HIGH
               description: 'The peer is not in the ''Standby Hot'' state (e.g., Disabled, Unknown, Standby Cold). Proper failover may not be possible in the event of a failure'
@@ -229,7 +259,7 @@ zabbix_export:
           description: 'AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged'
           triggers:
             - uuid: 0005659153154b9d92f08163279ee1be
-              expression: 'find(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.16")=1'
+              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.16")=1'
               recovery_mode: NONE
               name: 'Channel Updated Trap on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Primaly Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.6\.2\.23\..*\=\s(.*)",\1)}'
               priority: INFO
@@ -251,9 +281,9 @@ zabbix_export:
           description: 'AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected'
           triggers:
             - uuid: a59c7d33f9a64f03a6aa3280c86319c8
-              expression: 'find(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],,,"SNMPv2-SMI::enterprises.14179.2.6.3.81")=1'
+              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],,,"SNMPv2-SMI::enterprises.14179.2.6.3.81")=1'
               recovery_mode: RECOVERY_EXPRESSION
-              recovery_expression: 'nodata(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],3600)=0'
+              recovery_expression: 'nodata(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],3600)=0'
               correlation_mode: TAG_VALUE
               correlation_tag: APNAME
               name: 'DFS Detected on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.2\.1\.4\..*\=\s(.*)",\1)}'
@@ -283,9 +313,9 @@ zabbix_export:
             CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated
           triggers:
             - uuid: 0236ba6a0cbb47f88a96625a272698e7
-              expression: 'find(/Cisco Catalyst 9800 by restconf/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","14179\\.2\\.6\\.3\\.8")=1'
+              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","14179\\.2\\.6\\.3\\.8")=1'
               recovery_mode: RECOVERY_EXPRESSION
-              recovery_expression: 'find(/Cisco Catalyst 9800 by restconf/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","9\\.9\\.513\\.0\\.4")=1'
+              recovery_expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","9\\.9\\.513\\.0\\.4")=1'
               correlation_mode: TAG_VALUE
               correlation_tag: APNAME
               name: 'AP Name: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Disjoined'
@@ -328,7 +358,7 @@ zabbix_export:
                 key: cisco.mobility.stats.master
               trigger_prototypes:
                 - uuid: 707a88e3c2944f9494045cf0040b39c6
-                  expression: 'last(/Cisco Catalyst 9800 by restconf/cisco.mobility.link.status[{#NODE.IP}]) <> "up"'
+                  expression: 'last(/Cisco Catalyst 9800 RESTCONF/cisco.mobility.link.status[{#NODE.IP}]) <> "up"'
                   name: 'Mobility Tunnel to {#NODE.IP} is Down'
                   manual_close: 'YES'
           master_item:
@@ -357,12 +387,14 @@ zabbix_export:
             var req = new HttpRequest();
             req.addHeader('Accept: application/yang-data+json');
             
-            // Basic認証ヘッダーの生成
+            // Generate Basic Authentication Header
             var authString = btoa(user + ':' + pass);
             req.addHeader('Authorization: Basic ' + authString);
             
             // -------------------------------------------------------
-            // 1. APリストの取得 (MACアドレス -> AP名)
+            // -------------------------------------------------------
+            // 1. Get AP List (MAC Address -> AP Name)
+            // -------------------------------------------------------
             // -------------------------------------------------------
             var apListUrl = url + "/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map";
             var apListRaw = req.get(apListUrl);
@@ -372,7 +404,9 @@ zabbix_export:
             }
             
             // -------------------------------------------------------
-            // 2. ラジオ情報の取得 (MAC + Slot -> 周波数帯)
+            // -------------------------------------------------------
+            // 2. Get Radio Info (MAC + Slot -> Frequency Band)
+            // -------------------------------------------------------
             // -------------------------------------------------------
             var radioUrl = url + "/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/radio-oper-data";
             var radioRaw = req.get(radioUrl);
@@ -382,7 +416,9 @@ zabbix_export:
             }
             
             // -------------------------------------------------------
-            // 3. RRM統計データの取得 (メインのループ対象)
+            // -------------------------------------------------------
+            // 3. Get RRM Stats Data (Main Loop Target)
+            // -------------------------------------------------------
             // -------------------------------------------------------
             var rrmDataUrl = url + "/Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement";
             var rrmDataRaw = req.get(rrmDataUrl);
@@ -392,7 +428,9 @@ zabbix_export:
             }
             
             // -------------------------------------------------------
-            // データ結合と整形処理
+            // -------------------------------------------------------
+            // Data Merge and Formatting
+            // -------------------------------------------------------
             // -------------------------------------------------------
             var output = [];
             try {
@@ -404,13 +442,13 @@ zabbix_export:
                 var radioData  = radioJson["Cisco-IOS-XE-wireless-access-point-oper:radio-oper-data"] || [];
                 var rrmData    = rrmDataJson["Cisco-IOS-XE-wireless-rrm-oper:rrm-measurement"] || [];
             
-                // Map 1: MACアドレス -> AP名
+                // Map 1: MAC Address -> AP Name
                 var nameMap = {};
                 apListData.forEach(function(ap) {
                     nameMap[ap["wtp-mac"]] = ap["wtp-name"];
                 });
             
-                // Map 2: MAC_Slot -> 周波数帯名
+                // Map 2: MAC_Slot -> Frequency Band Name
                 var bandMap = {};
                 radioData.forEach(function(rad) {
                     var key = rad["wtp-mac"] + "_" + rad["radio-slot-id"];
@@ -424,22 +462,22 @@ zabbix_export:
                     } else if (bandRaw === "dot11-6-ghz-band") {
                         bandName = "6GHz";
                     } else {
-                        // radio-remote-lan などを拾った場合のケア
+                        // Handle cases like radio-remote-lan
                         bandName = "Other"; 
                     }
                     bandMap[key] = bandName;
                 });
             
-                // メインループ: RRMデータを回してアイテム生成
+                // Main Loop: Iterate RRM Data to Generate Items
                 rrmData.forEach(function(item) {
                     var mac = item["wtp-mac"];
                     var slot = item["radio-slot-id"];
                     var apName = nameMap[mac] || mac;
                     
-                    // バンドMapから動的に周波数を取得 (なければUnknown)
+                    // Dynamically get frequency from Band Map (Unknown if missing)
                     var freq = bandMap[mac + "_" + slot] || "Unknown";
             
-                    // "Other" や "Unknown" のスロットを除外したい場合はここで if(freq === "Other") return; 等を入れる
+                    // If you want to exclude "Other" or "Unknown" slots, insert if(freq === "Other") return; here
             
                     output.push({
                         "{#AP.NAME}": apName,
@@ -552,6 +590,13 @@ zabbix_export:
             - type: JSONPATH
               parameters:
                 - '$.[''Cisco-IOS-XE-wireless-wlan-global-oper:wlan-info'']'
+      tags:
+        - tag: class
+          value: network
+        - tag: target
+          value: cisco
+        - tag: target
+          value: cisco-catalyst-9800
       macros:
         - macro: '{$RESTCONF.PASS}'
           value: Cisco123

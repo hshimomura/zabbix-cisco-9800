@@ -98,6 +98,11 @@ RESTCONF経由で取得される主なメトリクスです。
 | SNMP Trap - RadarChannelDetected | DFSレーダー検知トラップ (bsnRadarChannelDetected) | SNMP Trap |
 | SNMP Trap - AP disassociation | APの切断/再参加トラップ (bsnAPDisassociated / ciscoLwappApAssociated) | SNMP Trap |
 
+## スクリーンショット
+![Screenshotq1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
+![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
+
+
 ## テスト環境
 - Cisco Catalyst 9800-L wireless controller
 - IOS XE 17.15.4d

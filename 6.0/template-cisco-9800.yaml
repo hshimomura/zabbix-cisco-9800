@@ -1,17 +1,17 @@
 zabbix_export:
   version: '6.0'
-  date: '2024-05-17T11:31:38Z'
+  date: '2024-07-27T12:01:49Z'
   groups:
     - uuid: 7df96b18c230490a9a0a9e2307226333
       name: Templates
   templates:
     - uuid: 1903846af2b84ce987d390c869593a12
-      template: 'Cisco Catalyst 9800 by SNMP'
-      name: 'Cisco Catalyst 9800 by SNMP'
+      template: 'Cisco Catalyst 9800 SNMP'
+      name: 'Cisco Catalyst 9800 SNMP'
       description: |
         Zabbix template for Cisco Catalyst 9800 series wireless controller.
         Needs IOS-XE 17.11 or later software image to get some of the SNMP MIBs on this template.
-        Tested on IOS-XE 17.12.3 and Zabbix 6.0.29 LTS.
+        Tested on IOS-XE 17.12.4 and Zabbix 6.0.32 LTS.
         
         This template focuses on wireless-related statuses like AP association, AP channel, or wireless client per SSID.
         Use the "Cisco IOS by SNMP" template to get general IOS-XE statuses like CPU utilization, memory usage, or interface status.
@@ -30,6 +30,9 @@ zabbix_export:
         ENTITY-MIB.my
         Please refer to the below MIBs for what information OID can take.
         https://github.com/cisco/cisco-mibs
+        
+        ## Author
+        Hideaki Shimomura @hshimomura
       groups:
         - name: Templates
       items:
@@ -103,7 +106,7 @@ zabbix_export:
               value: network
           triggers:
             - uuid: ee2b5e036c8d45d298b504b0e09bbe59
-              expression: 'change(/Cisco Catalyst 9800 by SNMP/cLHaPeerHotStandbyEvent)<>0'
+              expression: 'change(/Cisco Catalyst 9800 SNMP/cLHaPeerHotStandbyEvent)<>0'
               name: 'HA Peer Hotstandby status changed'
               priority: WARNING
               description: 'Track CISCO-LWAPP-HA-MIB::cLHaPeerHotStandbyEvent'
@@ -122,7 +125,7 @@ zabbix_export:
               value: network
           triggers:
             - uuid: 868fb423dc94467a936e2e1e0c9c3eaf
-              expression: 'find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.16")=1'
+              expression: 'find(/Cisco Catalyst 9800 SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.16")=1'
               recovery_mode: NONE
               name: 'Channel Updated Trap on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Primaly Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.6\.2\.23\..*\=\s(.*)",\1)}'
               status: DISABLED
@@ -133,7 +136,7 @@ zabbix_export:
                 APNAME
                 AIRESPACE-WIRELESS-MIB::bsnAPName
                 
-                find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],86400)=1
+                find(/Cisco Catalyst 9800 SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],86400)=1
               manual_close: 'YES'
               tags:
                 - tag: APNAME
@@ -151,7 +154,7 @@ zabbix_export:
               value: network
           triggers:
             - uuid: c3f611b0ecde4b6da4ca254125f0f08d
-              expression: 'find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.81")=1'
+              expression: 'find(/Cisco Catalyst 9800 SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.81")=1'
               recovery_mode: NONE
               name: 'DFS Detected on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.2\.1\.4\..*\=\s(.*)",\1)}'
               priority: INFO
@@ -165,7 +168,7 @@ zabbix_export:
                 CHANNEL
                 AIRESPACE-WIRELESS-MIB::bsnAPIfPhyChannelNumber
                 
-                find(/Cisco Catalyst 9800 by SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],86400)=1
+                find(/Cisco Catalyst 9800 SNMP/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],86400)=1
               type: MULTIPLE
               manual_close: 'YES'
               tags:
@@ -189,9 +192,9 @@ zabbix_export:
               value: network
           triggers:
             - uuid: 0eaba496846642cab39f3451fdce776a
-              expression: 'find(/Cisco Catalyst 9800 by SNMP/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","14179\.2\.6\.3\.8")=1'
+              expression: 'find(/Cisco Catalyst 9800 SNMP/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","14179\.2\.6\.3\.8")=1'
               recovery_mode: RECOVERY_EXPRESSION
-              recovery_expression: 'find(/Cisco Catalyst 9800 by SNMP/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","9\.9\.513\.0\.4")=1'
+              recovery_expression: 'find(/Cisco Catalyst 9800 SNMP/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","9\.9\.513\.0\.4")=1'
               correlation_mode: TAG_VALUE
               correlation_tag: APNAME
               name: 'AP Name: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Disjoined'
@@ -319,11 +322,11 @@ zabbix_export:
               trigger_prototypes:
                 - uuid: b626183cc6f14afb8e8603fa9401c78d
                   expression: |
-                    last(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}])=2
+                    last(/Cisco Catalyst 9800 SNMP/bsnAPOperationStatus[{#APNAME}])=2
                     and
-                    last(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}],#1)<>last(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}],#2)
+                    last(/Cisco Catalyst 9800 SNMP/bsnAPOperationStatus[{#APNAME}],#1)<>last(/Cisco Catalyst 9800 SNMP/bsnAPOperationStatus[{#APNAME}],#2)
                   recovery_mode: RECOVERY_EXPRESSION
-                  recovery_expression: 'find(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}],3,,"1")=1'
+                  recovery_expression: 'find(/Cisco Catalyst 9800 SNMP/bsnAPOperationStatus[{#APNAME}],3,,"1")=1'
                   correlation_mode: TAG_VALUE
                   correlation_tag: APNAME
                   name: 'AP Operation Status changed {#APNAME}'
@@ -333,7 +336,7 @@ zabbix_export:
                     It will be useful when SNMP trap is not used.
                     
                     
-                    change(/Cisco Catalyst 9800 by SNMP/bsnAPOperationStatus[{#APNAME}])<>0
+                    change(/Cisco Catalyst 9800 SNMP/bsnAPOperationStatus[{#APNAME}])<>0
                   manual_close: 'YES'
                   tags:
                     - tag: APNAME
@@ -393,29 +396,28 @@ zabbix_export:
                         value = "," + value;
                         return value;
                       }
-                      
               tags:
                 - tag: component
                   value: 'access point'
           trigger_prototypes:
             - uuid: 5e57bb3c238d4e9abbf3f8dd230136fb
               expression: |
-                (nodata(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-24ghz-[{#APNAME}],900)=0
+                (nodata(/Cisco Catalyst 9800 SNMP/bsnAPIfPhyChannelNumber-24ghz-[{#APNAME}],900)=0
                 or
-                nodata(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-cLApExtensionChannels-5ghz-[{#APNAME}],900)=0)
+                nodata(/Cisco Catalyst 9800 SNMP/bsnAPIfPhyChannelNumber-cLApExtensionChannels-5ghz-[{#APNAME}],900)=0)
                 
                 
                 
                 and
                 
-                (change(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-24ghz-[{#APNAME}])<>0
+                (change(/Cisco Catalyst 9800 SNMP/bsnAPIfPhyChannelNumber-24ghz-[{#APNAME}])<>0
                 or
-                change(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-cLApExtensionChannels-5ghz-[{#APNAME}])<>0)
+                change(/Cisco Catalyst 9800 SNMP/bsnAPIfPhyChannelNumber-cLApExtensionChannels-5ghz-[{#APNAME}])<>0)
               recovery_mode: RECOVERY_EXPRESSION
               recovery_expression: |
-                changecount(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-24ghz-[{#APNAME}],3600)=0
+                changecount(/Cisco Catalyst 9800 SNMP/bsnAPIfPhyChannelNumber-24ghz-[{#APNAME}],3600)=0
                 and
-                changecount(/Cisco Catalyst 9800 by SNMP/bsnAPIfPhyChannelNumber-cLApExtensionChannels-5ghz-[{#APNAME}],3600)=0
+                changecount(/Cisco Catalyst 9800 SNMP/bsnAPIfPhyChannelNumber-cLApExtensionChannels-5ghz-[{#APNAME}],3600)=0
               name: 'Channel Updated on {#APNAME}'
               priority: INFO
               description: |
@@ -447,11 +449,11 @@ zabbix_export:
               trigger_prototypes:
                 - uuid: d97a723cdb1546609c462521d0415a7d
                   expression: |
-                    last(/Cisco Catalyst 9800 by SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}])=2
+                    last(/Cisco Catalyst 9800 SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}])=2
                     and
-                    (last(/Cisco Catalyst 9800 by SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],#1)<>last(/Cisco Catalyst 9800 by SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],#2))
+                    (last(/Cisco Catalyst 9800 SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],#1)<>last(/Cisco Catalyst 9800 SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],#2))
                   recovery_mode: RECOVERY_EXPRESSION
-                  recovery_expression: 'find(/Cisco Catalyst 9800 by SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],600,,"1")=1'
+                  recovery_expression: 'find(/Cisco Catalyst 9800 SNMP/cLMobilityGroupMembersOperControlPathStatus[{#MOBILITYPEER}],600,,"1")=1'
                   correlation_mode: TAG_VALUE
                   correlation_tag: PEER
                   name: 'Mobility Peer status down [{#MOBILITYPEER}]'
@@ -528,7 +530,6 @@ zabbix_export:
                   
                   // Convert the object back to a JSON string and return it
                   return JSON.stringify(obj);
-                  
         - uuid: 5847c3ef43a849f0930943331339ecb2
           name: cLWlanProfileName
           type: SNMP_AGENT
@@ -565,7 +566,7 @@ zabbix_export:
               graph_items:
                 - color: 0080FF
                   item:
-                    host: 'Cisco Catalyst 9800 by SNMP'
+                    host: 'Cisco Catalyst 9800 SNMP'
                     key: 'bsnDot11EssNumberOfMobileStations-[{#SNMPVALUE}]'
       tags:
         - tag: class
@@ -624,7 +625,7 @@ zabbix_export:
               newvalue: down
   triggers:
     - uuid: 73b1509a8f1d46788cceab95c91b9dff
-      expression: 'last(/Cisco Catalyst 9800 by SNMP/cLApGlobalAPConnectCount)=last(/Cisco Catalyst 9800 by SNMP/cLApGlobalMaxApsSupported)'
+      expression: 'last(/Cisco Catalyst 9800 SNMP/cLApGlobalAPConnectCount)=last(/Cisco Catalyst 9800 SNMP/cLApGlobalMaxApsSupported)'
       name: 'Maxmimum AP join limit has reached'
       priority: AVERAGE
       description: |
