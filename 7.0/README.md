@@ -3,7 +3,7 @@ Zabbix Template for Cisco Catalyst 9800 Series Wireless Controller (RESTCONF ver
 Japanese version is [here](README-ja.md)
 
 ## Purpose
-With the release of IOS XE 17.18.2, Cisco is progressively deprecating legacy protocols to enforce a "Secure by Design" philosophy. While migrating from SNMPv2 to SNMPv3 is encouraged, the encryption overhead of SNMPv3 often severely impacts data retrieval performance, even in smaller environments. Furthermore, Cisco has effectively ceased SNMP development in favor of modern streaming telemetry (NETCONF/RESTCONF/gRPC).
+With the release of IOS XE 17.18.2, Cisco is progressively deprecating legacy protocols to enforce a "Secure by Design" philosophy. While migrating from SNMPv2 to SNMPv3 is encouraged, the encryption overhead of SNMPv3 often severely impacts data retrieval performance, even in smaller environments. Furthermore, Cisco is prioritizing modern streaming telemetry over legacy SNMP for new feature development, recommending the use of streaming telemetry such as NETCONF/RESTCONF/gRPC for future monitoring.
 
 To ensure a smooth transition to encrypted management traffic, this Zabbix template migrates the majority of data collection to RESTCONF. However, since Zabbix currently lacks native support for receiving streaming telemetry for real-time alerts, SNMP Traps are retained for immediate notifications.
 
