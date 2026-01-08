@@ -3,13 +3,12 @@ Cisco Catalyst 9800シリーズ無線コントローラー用のZabbixテンプ�
 English version is [here](README.md)
 
 ## 目的
-Cisco は デフォルトでより安全に（secure by default）、また 設計段階から安全に（secure by design） するための、より広範な取り組みを推進しており、IOS XE 17.18.2 から、レガシーかつ安全でない機能／プロトコルを段階的に廃止し、より安全な代替手段への移行を促しています。
-この取り組みの一環として、Cisco は SNMPv2 を使用している環境に対し、より安全な SNMPv3 へ移行することを求めています。
-SNMPv3は既にZabbixでサポートされており、従来のCisco Catalyst 9800 SNMPでも動作しますが、暗号化通信であるSNMPv3への移行に伴い、情報取得速度が遅くなる症状がアクセスポイント数台の環境でも既に確認されています。またCisco はSNMPへの開発をほぼ停止しており、今後の監視系の項目はNETCONF/RESTCONF/gRPC等のストリーミングテレメトリの利用を推奨しています。
-本zabbix template は、管理系トラフィック暗号化の時代に備え、機能の大多数をRESTCONFに移行しました。一部のリアルタイム通知が必要な項目はZabbixでリアルタイムに受けられるストリーミングテレメトリの仕組みがないため、SNMP Trap を継続利用しています。
+IOS XE 17.18.2 以降、Cisco は「Secure by Design」の理念に基づき、レガシーかつ安全でない機能やプロトコルを段階的に廃止し、よりセキュアな代替手段への移行を推進しています。 この取り組みの一環として、SNMPv2 から SNMPv3 への移行が推奨されていますが、SNMPv3 の暗号化オーバーヘッドは負荷が高く、アクセスポイントが数台程度の環境であってもデータ取得のパフォーマンスが著しく低下することが確認されています。さらに、Cisco は SNMP の機能開発を実質的に終了しており、今後の監視手法として NETCONF/RESTCONF/gRPC 等のストリーミングテレメトリへの移行を推奨しています。
+
+暗号化された管理トラフィックへスムーズに移行するため、本テンプレートではデータ収集機能の大部分を RESTCONF に移行しました。ただし、現在の Zabbix はストリーミングテレメトリのリアルタイム受信にネイティブ対応していないため、即時通知が必要なアラートについては引き続き SNMP Trap を使用するハイブリッド構成としています。
 
 > [!NOTE]
-> このテンプレートは無線LANの監視に特化しており、CPU utilization, Memory utilization, interface stats, インベントリ については、"Cisco IOS by SNMP" と同時に使用することでカバーすることを想定しています。
+> 本テンプレートは無線LANの監視に特化しています。CPU/メモリ使用率、インターフェース統計、インベントリ情報などの一般的なシステム統計については、標準の "Cisco IOS by SNMP" テンプレートと併用して監視することを想定しています。
 
 ### 参考URL
 Release Notes for Cisco Catalyst 9800 Series Wireless Controller, Cisco IOS XE 17.18.2
@@ -20,7 +19,7 @@ https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/17-18/release-not
 
 - Cisco Catalyst 9800シリーズ ワイヤレスLANコントローラ
   - RESTCONFが有効化されていること (IOS XE 16.10以降推奨)
-  - HTTP(S) サーバーが有効化されていること
+  - HTTPS サーバーが有効化されていること
 - Zabbix 7.0以降
 
 ## 設定方法 (Cisco Catalyst 9800 WLC)
@@ -58,7 +57,7 @@ snmp-server host [ZABBIX IP ADDRESS] version 3 priv [SNMPv3 Username]
 | --- | --- | --- |
 | `{$RESTCONF.URL}` | RESTCONFのベースURL。通常変更する必要はありません。 | `https://{HOST.CONN}/restconf/data` |
 | `{$RESTCONF.USER}` | RESTCONF接続用ユーザー名 | `admin` |
-| `{$RESTCONF.PASS}` | RESTCONF接続用パスワード | `Cisco123` |
+| `{$RESTCONF.PASS}` | RESTCONF接続用パスワード | `adminpassword` |
 
 ## ディスカバリルール
 

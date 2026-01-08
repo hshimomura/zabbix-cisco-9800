@@ -555,7 +555,7 @@ zabbix_export:
           value: cisco-catalyst-9800
       macros:
         - macro: '{$RESTCONF.PASS}'
-          value: Cisco123
+          value: adminpassword
         - macro: '{$RESTCONF.URL}'
           value: 'https://{HOST.CONN}/restconf/data'
         - macro: '{$RESTCONF.USER}'

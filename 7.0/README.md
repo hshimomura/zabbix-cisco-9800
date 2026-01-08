@@ -3,14 +3,12 @@ Zabbix Template for Cisco Catalyst 9800 Series Wireless Controller (RESTCONF ver
 Japanese version is [here](README-ja.md)
 
 ## Purpose
-Starting with IOS XE 17.18.2, Cisco is progressively deprecating legacy and insecure features/protocols, encouraging migration to more secure alternatives. This is part of a broader initiative to make Cisco products more secure by default and secure by design.
-As part of this initiative, Cisco is encouraging customers to migrate from SNMPv2 to SNMPv3.
-Although SNMPv3 is already supported by Zabbix and works with the traditional "Cisco Catalyst 9800 SNMP" template, strict encryption in SNMPv3 has been observed to slow down data retrieval even in environments with only a few Access Points. Furthermore, Cisco has nearly stopped development for SNMP and recommends using streaming telemetry such as NETCONF/RESTCONF/gRPC for future monitoring.
+With the release of IOS XE 17.18.2, Cisco is progressively deprecating legacy protocols to enforce a "Secure by Design" philosophy. While migrating from SNMPv2 to SNMPv3 is encouraged, the encryption overhead of SNMPv3 often severely impacts data retrieval performance, even in smaller environments. Furthermore, Cisco has effectively ceased SNMP development in favor of modern streaming telemetry (NETCONF/RESTCONF/gRPC).
 
-For smooth migration of encrypting management traffic, this Zabbix template has migrated the majority of its functions to RESTCONF. Since there is currently no mechanism in Zabbix to receive streaming telemetry for real-time notifications, SNMP Traps are still used for items requiring real-time alerting.
+To ensure a smooth transition to encrypted management traffic, this Zabbix template migrates the majority of data collection to RESTCONF. However, since Zabbix currently lacks native support for receiving streaming telemetry for real-time alerts, SNMP Traps are retained for immediate notifications.
 
 > [!NOTE]
-> This template specializes in wireless LAN monitoring. For CPU utilization, Memory utilization, interface stats, and inventory items, it is intended to be used in conjunction with "Cisco IOS by SNMP".
+> This template specializes in Wireless LAN monitoring. It is designed to be used in conjunction with the standard "Cisco IOS by SNMP" template for generic system statistics, such as CPU/Memory utilization, interface traffic, and hardware inventory.
 
 ### Reference URL
 Release Notes for Cisco Catalyst 9800 Series Wireless Controller, Cisco IOS XE 17.18.2
@@ -20,7 +18,7 @@ https://www.cisco.com/c/en/us/td/docs/wireless/controller/9800/17-18/release-not
 
 - Cisco Catalyst 9800 Series Wireless LAN Controller
   - RESTCONF must be enabled (IOS XE 16.10 or later recommended)
-  - HTTP(S) Server must be enabled
+  - HTTPS Server must be enabled
 - Zabbix 7.0 or later
 
 ## Configuration (Cisco Catalyst 9800 WLC)
@@ -58,7 +56,7 @@ snmp-server host [ZABBIX IP ADDRESS] version 3 priv [SNMPv3 Username]
 | --- | --- | --- |
 | `{$RESTCONF.URL}` | Base URL for RESTCONF. Usually does not need to be changed. | `https://{HOST.CONN}/restconf/data` |
 | `{$RESTCONF.USER}` | Username for RESTCONF connection | `admin` |
-| `{$RESTCONF.PASS}` | Password for RESTCONF connection | `Cisco123` |
+| `{$RESTCONF.PASS}` | Password for RESTCONF connection | `adminpassword` |
 
 ## Discovery Rules
 
