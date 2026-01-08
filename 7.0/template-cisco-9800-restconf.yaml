@@ -110,50 +110,6 @@ zabbix_export:
                 - '86400'
           master_item:
             key: cisco.ha.stats.master
-        - uuid: 78bd87736fe14551984d153f570b23cc
-          name: 'CPU Utilization'
-          type: HTTP_AGENT
-          key: 'cisco.iosxe.cpu.util[one-minute]'
-          authtype: BASIC
-          username: '{$RESTCONF.USER}'
-          password: '{$RESTCONF.PASS}'
-          description: 'Cisco-IOS-XE-process-cpu-oper:cpu-usage/cpu-utilization'
-          preprocessing:
-            - type: JSONPATH
-              parameters:
-                - '$.[''Cisco-IOS-XE-process-cpu-oper:one-minute'']'
-          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-process-cpu-oper:cpu-usage/cpu-utilization/one-minute'
-          headers:
-            - name: Accept
-              value: application/yang-data+json
-        - uuid: a68e3028aaa743c784e0951dd1799aab
-          name: 'Memory Utilization'
-          type: HTTP_AGENT
-          key: cisco.iosxe.memory.util
-          authtype: BASIC
-          username: '{$RESTCONF.USER}'
-          password: '{$RESTCONF.PASS}'
-          description: 'Cisco-IOS-XE-memory-oper:memory-statistics/memory-statistic'
-          preprocessing:
-            - type: JSONPATH
-              parameters:
-                - '$.[''Cisco-IOS-XE-memory-oper:memory-statistic''][?(@.name == ''Processor'')].first()'
-            - type: JAVASCRIPT
-              parameters:
-                - |
-                  var obj = JSON.parse(value);
-                  var total = parseFloat(obj['total-memory']);
-                  var used = parseFloat(obj['used-memory']);
-                  
-                  if (total > 0) {
-                      return (used / total * 100).toFixed(2);
-                  } else {
-                      return 0;
-                  }
-          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-memory-oper:memory-statistics/memory-statistic'
-          headers:
-            - name: Accept
-              value: application/yang-data+json
         - uuid: 14ae264ac128429f936f4e6cb8140c3e
           name: 'WLC RRM Stats Master'
           type: HTTP_AGENT
@@ -518,7 +474,7 @@ zabbix_export:
             - Statistics: /Cisco-IOS-XE-wireless-rrm-oper:rrm-oper-data/rrm-measurement
             
             Item Name Examples:
-            - AP AP-Tokyo-01 (5GHz): RX Utilization
+            - AP AP-Tokyo-01 (5GHz): Channel Utilization
             - AP AP-Osaka-02 (6GHz): Client Count
           item_prototypes:
             - uuid: a31755cca0c74a83a03380ab3056aa23

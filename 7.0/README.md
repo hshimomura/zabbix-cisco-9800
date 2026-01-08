@@ -5,7 +5,7 @@ Japanese version is [here](README-ja.md)
 ## Purpose
 Starting with IOS XE 17.18.2, Cisco is progressively deprecating legacy and insecure features/protocols, encouraging migration to more secure alternatives. This is part of a broader initiative to make Cisco products more secure by default and secure by design.
 As part of this initiative, Cisco is encouraging customers to migrate from SNMPv2 to SNMPv3.
-Although SNMPv3 is already supported by Zabbix and works with the traditional "Cisco Catalyst 9800 for SNMP" template, strict encryption in SNMPv3 has been observed to slow down data retrieval even in environments with only a few Access Points. Furthermore, Cisco has nearly stopped development for SNMP and recommends using streaming telemetry such as NETCONF/RESTCONF/gRPC for future monitoring.
+Although SNMPv3 is already supported by Zabbix and works with the traditional "Cisco Catalyst 9800 SNMP" template, strict encryption in SNMPv3 has been observed to slow down data retrieval even in environments with only a few Access Points. Furthermore, Cisco has nearly stopped development for SNMP and recommends using streaming telemetry such as NETCONF/RESTCONF/gRPC for future monitoring.
 
 For smooth migration of encrypting management traffic, this Zabbix template has migrated the majority of its functions to RESTCONF. Since there is currently no mechanism in Zabbix to receive streaming telemetry for real-time notifications, SNMP Traps are still used for items requiring real-time alerting.
 
@@ -85,8 +85,6 @@ Main metrics retrieved via RESTCONF.
 | AP {#AP.NAME} ({#FREQ.NAME}): Channel Utilization | Channel utilization per AP/Frequency (CCA) | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Client Count | Client count per AP/Frequency | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Noise Level | Noise level per AP/Frequency | Dependent |
-| AP {#AP.NAME} ({#FREQ.NAME}): RX Utilization | RX utilization per AP/Frequency | Dependent |
-| AP {#AP.NAME} ({#FREQ.NAME}): TX Utilization | TX utilization per AP/Frequency | Dependent |
 | SSID {#WLAN.NAME}: Client Count | Client count per SSID | Dependent |
 
 ### SNMP Trap
@@ -99,8 +97,8 @@ Events requiring real-time notification are received via SNMP Trap.
 | SNMP Trap - AP disassociation | AP Disassociation/Reassociation Trap (bsnAPDisassociated / ciscoLwappApAssociated) | SNMP Trap |
 
 ## Screenshots
-![Screenshot1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
-![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
+![Screenshot1](../screenshots/screenshot1.png)
+![Screenshot2](../screenshots/screenshot2.png)
 
 ## Test Environment
 - Cisco Catalyst 9800-L wireless controller

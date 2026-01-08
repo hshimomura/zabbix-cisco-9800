@@ -81,8 +81,8 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 
 
 ## スクリーンショット
-![Screenshot1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
-![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
+![Screenshot1](../screenshots/screenshot1.png)
+![Screenshot2](../screenshots/screenshot2.png)
 
 
 ## テスト環境

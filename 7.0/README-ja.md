@@ -5,7 +5,7 @@ English version is [here](README.md)
 ## 目的
 Cisco は デフォルトでより安全に（secure by default）、また 設計段階から安全に（secure by design） するための、より広範な取り組みを推進しており、IOS XE 17.18.2 から、レガシーかつ安全でない機能／プロトコルを段階的に廃止し、より安全な代替手段への移行を促しています。
 この取り組みの一環として、Cisco は SNMPv2 を使用している環境に対し、より安全な SNMPv3 へ移行することを求めています。
-SNMPv3は既にZabbixでサポートされており、従来のCisco Catalyst 9800 for SNMPでも動作しますが、暗号化通信であるSNMPv3への移行に伴い、情報取得速度が遅くなる症状がアクセスポイント数台の環境でも既に確認されています。またCisco はSNMPへの開発をほぼ停止しており、今後の監視系の項目はNETCONF/RESTCONF/gRPC等のストリーミングテレメトリの利用を推奨しています。
+SNMPv3は既にZabbixでサポートされており、従来のCisco Catalyst 9800 SNMPでも動作しますが、暗号化通信であるSNMPv3への移行に伴い、情報取得速度が遅くなる症状がアクセスポイント数台の環境でも既に確認されています。またCisco はSNMPへの開発をほぼ停止しており、今後の監視系の項目はNETCONF/RESTCONF/gRPC等のストリーミングテレメトリの利用を推奨しています。
 本zabbix template は、管理系トラフィック暗号化の時代に備え、機能の大多数をRESTCONFに移行しました。一部のリアルタイム通知が必要な項目はZabbixでリアルタイムに受けられるストリーミングテレメトリの仕組みがないため、SNMP Trap を継続利用しています。
 
 > [!NOTE]
@@ -85,8 +85,6 @@ RESTCONF経由で取得される主なメトリクスです。
 | AP {#AP.NAME} ({#FREQ.NAME}): Channel Utilization | AP/周波数ごとのチャネル使用率 (CCA) | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Client Count | AP/周波数ごとのクライアント数 | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Noise Level | AP/周波数ごとのノイズレベル | Dependent |
-| AP {#AP.NAME} ({#FREQ.NAME}): RX Utilization | AP/周波数ごとの受信使用率 | Dependent |
-| AP {#AP.NAME} ({#FREQ.NAME}): TX Utilization | AP/周波数ごとの送信使用率 | Dependent |
 | SSID {#WLAN.NAME}: Client Count | SSIDごとのクライアント数 | Dependent |
 
 ### SNMP Trap
@@ -99,8 +97,8 @@ RESTCONF経由で取得される主なメトリクスです。
 | SNMP Trap - AP disassociation | APの切断/再参加トラップ (bsnAPDisassociated / ciscoLwappApAssociated) | SNMP Trap |
 
 ## スクリーンショット
-![スクリーンショット1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
-![スクリーンショット2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
+![スクリーンショット1](../screenshots/screenshot1.png)
+![スクリーンショット2](../screenshots/screenshot2.png)
 
 
 ## テスト環境
