@@ -99,8 +99,8 @@ RESTCONF経由で取得される主なメトリクスです。
 | SNMP Trap - AP disassociation | APの切断/再参加トラップ (bsnAPDisassociated / ciscoLwappApAssociated) | SNMP Trap |
 
 ## スクリーンショット
-![Screenshotq1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
-![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
+![スクリーンショット1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
+![スクリーンショット2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
 
 
 ## テスト環境
