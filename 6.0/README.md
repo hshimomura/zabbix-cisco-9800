@@ -72,11 +72,6 @@ The template uses just OID and Standard MIB. No need to install vendor MIBs. Ple
 [https://github.com/cisco/cisco-mibs](https://github.com/cisco/cisco-mibs)
 
 
-## Screenshots
-![Screenshot1](../screenshots/screenshot1.png)
-![Screenshot2](../screenshots/screenshot2.png)
-
-
 ## Tested Environment
 - Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.3, RELEASE SOFTWARE (fc7)
   - C9800-L-F-K9

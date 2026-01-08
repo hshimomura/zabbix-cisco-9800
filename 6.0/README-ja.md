@@ -80,10 +80,6 @@ snmp-server host [ZABBIX IP ADDRESS] version 2c [SNMP COMMUNITY]
 [https://github.com/cisco/cisco-mibs](https://github.com/cisco/cisco-mibs)
 
 
-## スクリーンショット
-![Screenshot1](../screenshots/screenshot1.png)
-![Screenshot2](../screenshots/screenshot2.png)
-
 
 ## テスト環境
 - Cisco IOS Software [Dublin], C9800 Software (C9800_IOSXE-K9), Version 17.12.3, RELEASE SOFTWARE (fc7)

@@ -12,7 +12,7 @@ Zabbix のバージョンおよび監視方式（SNMP vs RESTCONF）に合わせ
 | **[6.0](./6.0/README-ja.md)** | 従来の SNMP ベースのテンプレート。<br>既存環境の維持向け。 | Zabbix 6.0 以降 | SNMP |
 
 > [!NOTE]
-> このテンプレートは無線LANの監視項目に特化しており、CPU utilization, Memory utilization, interface stats, インベントリ については、"Cisco IOS by SNMP" と同時に使用することを想定しています。
+> 本テンプレートは無線LANの監視に特化しています。CPU/メモリ使用率、インターフェース統計、インベントリ情報などの一般的なシステム統計については、標準の "Cisco IOS by SNMP" テンプレートと併用して監視することを想定しています。
 
 ## 詳細情報
 
@@ -20,3 +20,7 @@ Zabbix のバージョンおよび監視方式（SNMP vs RESTCONF）に合わせ
 
 - [Zabbix 7.0 用 (RESTCONF 版) の詳細ドキュメント](./7.0/README-ja.md)
 - [Zabbix 6.0 用 (SNMP 版) の詳細ドキュメント](./6.0/README-ja.md)
+
+## スクリーンショット
+![スクリーンショット1](../screenshots/screenshot1.png)
+![スクリーンショット2](../screenshots/screenshot2.png)

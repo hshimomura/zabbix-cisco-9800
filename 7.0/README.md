@@ -94,10 +94,6 @@ Events requiring real-time notification are received via SNMP Trap.
 | SNMP Trap - RadarChannelDetected | DFS Radar Detected Trap (bsnRadarChannelDetected) | SNMP Trap |
 | SNMP Trap - AP disassociation | AP Disassociation/Reassociation Trap (bsnAPDisassociated / ciscoLwappApAssociated) | SNMP Trap |
 
-## Screenshots
-![Screenshot1](../screenshots/screenshot1.png)
-![Screenshot2](../screenshots/screenshot2.png)
-
 ## Test Environment
 - Cisco Catalyst 9800-L wireless controller
 - IOS XE 17.15.4d
