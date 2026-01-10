@@ -46,7 +46,25 @@ snmp-server user [SNMPv3 Username] [SNMPv3 Group] v3 auth sha [AUTH_PASS] priv a
 
 ! Trap送信先の設定
 snmp-server host [ZABBIX IP ADDRESS] version 3 priv [SNMPv3 Username]
+
+! EngineIDの確認
+#show snmp engineID
+Local SNMP engineID: 800000090300F4BD9E59254C
+Remote Engine ID          IP-addr    Port
+
 ```
+
+> [!NOTE]
+> ZabbixがデバイスからのSNMPv3 Trapを受け入れられるようにするには、Zabbixドキュメントを参照して `snmptrapd` を設定してください。
+> 以下の設定は例です。EngineIDと認証情報は、実際のデバイス設定と一致させてください。
+```shell
+# snmptrapd.conf
+createUser -e [SNMP engineID] [SNMPv3 Username] SHA [AUTH_PASS] AES [PRIV_PASS]
+authuser log,execute [SNMPv3 Username]
+
+```
+https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap
+
 
 ## 使用方法
 

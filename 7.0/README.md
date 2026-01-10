@@ -45,7 +45,25 @@ snmp-server user [SNMPv3 Username] [SNMPv3 Group] v3 auth sha [AUTH_PASS] priv a
 
 ! Configure Trap Destination
 snmp-server host [ZABBIX IP ADDRESS] version 3 priv [SNMPv3 Username]
+
+! Check your EngineID
+#show snmp engineID
+Local SNMP engineID: 800000090300F4BD9E59254C
+Remote Engine ID          IP-addr    Port
+
 ```
+
+> [!NOTE]
+> Refer to the Zabbix Documentation to configure `snmptrapd` for SNMPv3 Traps so that Zabbix accepts them from your devices.
+> The configuration below is an example; ensure the EngineID and credentials match your actual device settings.
+```shell
+# snmptrapd.conf
+createUser -e [SNMP engineID] [SNMPv3 Username] SHA [AUTH_PASS] AES [PRIV_PASS]
+authuser log,execute [SNMPv3 Username]
+
+```
+https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/snmptrap
+
 
 ## Usage
 
