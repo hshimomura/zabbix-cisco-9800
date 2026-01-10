@@ -33,7 +33,7 @@ zabbix_export:
         3. Ensure the host interface is configured correctly for connection.
         
         NOTE
-        While this template monitors WLC-specific resources (CPU/Memory via RESTCONF), it is recommended to use the standard "Cisco IOS by SNMP" template for monitoring physical network interfaces.
+        While this template monitors WLC-specific resources, it is recommended to use the standard "Cisco IOS by SNMP" template for monitoring physical network interfaces.
         
         AUTHOR
         Hideaki Shimomura @hshimomura
@@ -504,8 +504,8 @@ zabbix_export:
               Uses the configured "AP Name" for item generation instead of MAC addresses.
             - Dynamic Band Mapping:
               Detects the actual operating frequency band for each slot instead of assuming fixed assignments.
-            -  XOR Radio Support: Correctly identifies if Slot 0 is operating in 5GHz mode (e.g., Dual 5GHz).
-              Wi-Fi 6E Support: Automatically detects 6GHz bands on supported APs (e.g., Slot 2).
+            - XOR Radio Support: Correctly identifies if Slot 0 is operating in 5GHz mode (e.g., Dual 5GHz).
+            - Wi-Fi 6E Support: Automatically detects 6GHz bands on supported APs (e.g., Slot 2).
             
             Efficient Data Retrieval:
             - Minimizes API calls by aggregating data from multiple endpoints within a single JavaScript execution.
