@@ -44,8 +44,8 @@ For detailed setup instructions and specifications for each version, please refe
 
 
 ## Screenshots
-![Screenshot1](./screenshots/screenshot1.png)
-![Screenshot2](./screenshots/screenshot2.png)
+![Screenshot1](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/4dd37fb6-fc9d-7e33-23aa-9928b1c4a85b.png)
+![Screenshot2](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/fdc40126-9b34-8200-5ac5-6ea7dad9ecd6.png)
 
 ## License
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.

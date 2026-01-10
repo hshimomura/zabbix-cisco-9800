@@ -3,9 +3,9 @@ Zabbix Template for Cisco Catalyst 9800 Series Wireless Controller (RESTCONF ver
 Japanese version is [here](README-ja.md)
 
 ## Purpose
-With the release of IOS XE 17.18.2, Cisco is progressively deprecating legacy protocols to enforce a "Secure by Design" philosophy. While migrating from SNMPv2 to SNMPv3 is encouraged, the encryption overhead of SNMPv3 often severely impacts data retrieval performance, even in smaller environments. Furthermore, Cisco is prioritizing modern streaming telemetry over legacy SNMP for new feature development, recommending the use of streaming telemetry such as NETCONF/RESTCONF/gRPC for future monitoring.
+With the release of IOS XE 17.18.2, Cisco is progressively deprecating legacy protocols to enforce a "Secure by Design" philosophy. While migrating from SNMPv2 to SNMPv3 is encouraged, the encryption overhead of SNMPv3 often severely impacts data retrieval performance, even in smaller environments, frequently exceeding the default Zabbix SNMP timeout of 3 seconds. Furthermore, Cisco is prioritizing modern streaming telemetry over legacy SNMP for new feature development, recommending the use of streaming telemetry such as NETCONF/RESTCONF/gRPC for future monitoring.
 
-To ensure a smooth transition to encrypted management traffic, this Zabbix template migrates the majority of data collection to RESTCONF. However, since Zabbix currently lacks native support for receiving streaming telemetry for real-time alerts, SNMP Traps are retained for immediate notifications.
+To address these performance challenges while ensuring secure management traffic encryption, this Zabbix template migrates the majority of data collection to RESTCONF. However, since Zabbix currently lacks native support for receiving streaming telemetry for real-time alerts, SNMP Traps are retained for immediate notifications.
 
 > [!NOTE]
 > This template specializes in Wireless LAN monitoring. It is designed to be used in conjunction with the standard "Cisco IOS by SNMP" template for generic system statistics, such as CPU/Memory utilization, interface traffic, and hardware inventory.
@@ -117,8 +117,8 @@ Events requiring real-time notification are received via SNMP Trap.
 Ensure that the host is added to Zabbix and the template is applied.
 Change macros in the template to match your environment.
 
-![Screenshot3](../screenshots/screenshot3.png)
-![Screenshot4](../screenshots/screenshot4.png)
+![Screenshot3](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/6a9d5994-9d81-4a1d-85e2-231876ec0f9a.png)
+![Screenshot4](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/385067/5770181e-5df3-44ba-972b-9b5ff86acf93.png)
 
 ## Test Environment
 - Cisco Catalyst 9800-L wireless controller
