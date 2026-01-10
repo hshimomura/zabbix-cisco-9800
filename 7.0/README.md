@@ -117,8 +117,8 @@ Events requiring real-time notification are received via SNMP Trap.
 Ensure that the host is added to Zabbix and the template is applied.
 Change macros in the template to match your environment.
 
-![Screenshot3](./screenshots/screenshot3.png)
-![Screenshot4](./screenshots/screenshot4.png)
+![Screenshot3](../screenshots/screenshot3.png)
+![Screenshot4](../screenshots/screenshot4.png)
 
 ## Test Environment
 - Cisco Catalyst 9800-L wireless controller

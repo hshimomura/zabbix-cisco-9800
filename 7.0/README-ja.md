@@ -118,8 +118,8 @@ RESTCONF経由で取得される主なメトリクスです。
 ホストをZabbixに追加し、テンプレートを適用してください。
 環境に合わせてテンプレートのマクロを変更してください。
 
-![Screenshot3](./screenshots/screenshot3.png)
-![Screenshot4](./screenshots/screenshot4.png)
+![Screenshot3](../screenshots/screenshot3.png)
+![Screenshot4](../screenshots/screenshot4.png)
 
 
 ## テスト環境
