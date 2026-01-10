@@ -17,6 +17,7 @@ zabbix_export:
         KEY FEATURES
         - Performance & Security: Utilizes RESTCONF (HTTP Agent) for efficient data retrieval over HTTPS.
         - High Availability (HA) Monitoring: Tracks SSO status, peer state (Standby Hot), and switchover reasons.
+        - Mobility Monitoring: Tracks mobility tunnel status and group members.
         - Smart AP Radio Discovery: Dynamically detects and maps radio slots to their actual frequency bands (2.4GHz / 5GHz / 6GHz), supporting XOR radios and Wi-Fi 6E.
         - WLAN/SSID Statistics: Monitors client counts per SSID.
         - Rogue Monitoring: Tracks total counts of Rogue APs and clients.
