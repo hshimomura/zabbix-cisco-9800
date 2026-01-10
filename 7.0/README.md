@@ -113,6 +113,24 @@ Events requiring real-time notification are received via SNMP Trap.
 | SNMP Trap - RadarChannelDetected | DFS Radar Detected Trap (bsnRadarChannelDetected) | SNMP Trap |
 | SNMP Trap - AP disassociation | AP Disassociation/Reassociation Trap (bsnAPDisassociated / ciscoLwappApAssociated) | SNMP Trap |
 
+### Useful Tips: Suppressing Syslog Messages
+
+Frequent RESTCONF polling may generate excessive `%DMI-5-AUTH_PASSED` syslog messages, filling up the logs.
+
+Example log:
+```
+Jan 10 15:22:03.380: %DMI-5-AUTH_PASSED: Chassis 1 R0/0: dmiauthd: User 'admin' authenticated successfully from 192.168.1.1:0  for rest over http. External groups: PRIV15
+```
+
+To suppress these specific messages, you can configure a syslog discriminator:
+
+```cisco
+logging discriminator RESTCONF msg-body drops rest
+logging buffered discriminator RESTCONF
+logging console discriminator RESTCONF
+logging monitor discriminator RESTCONF
+```
+
 ## Screenshots
 Ensure that the host is added to Zabbix and the template is applied.
 Change macros in the template to match your environment.

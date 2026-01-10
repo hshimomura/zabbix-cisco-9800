@@ -114,6 +114,24 @@ RESTCONF経由で取得される主なメトリクスです。
 | SNMP Trap - RadarChannelDetected | DFSレーダー検知トラップ (bsnRadarChannelDetected) | SNMP Trap |
 | SNMP Trap - AP disassociation | APの切断/再参加トラップ (bsnAPDisassociated / ciscoLwappApAssociated) | SNMP Trap |
 
+### 便利なヒント: Syslog メッセージの抑制
+
+RESTCONF ポーリングが頻繁に行われると、`%DMI-5-AUTH_PASSED` という syslog メッセージが大量に生成され、ログが埋まってしまうことがあります。
+
+ログの例:
+```
+Jan 10 15:22:03.380: %DMI-5-AUTH_PASSED: Chassis 1 R0/0: dmiauthd: User 'admin' authenticated successfully from 192.168.1.1:0  for rest over http. External groups: PRIV15
+```
+
+これらの特定のメッセージを抑制するには、syslog discriminator を設定します:
+
+```cisco
+logging discriminator RESTCONF msg-body drops rest
+logging buffered discriminator RESTCONF
+logging console discriminator RESTCONF
+logging monitor discriminator RESTCONF
+```
+
 ## スクリーンショット
 ホストをZabbixに追加し、テンプレートを適用してください。
 環境に合わせてテンプレートのマクロを変更してください。
