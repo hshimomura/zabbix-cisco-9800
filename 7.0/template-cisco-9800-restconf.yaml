@@ -1,18 +1,18 @@
 zabbix_export:
   version: '7.0'
   template_groups:
-    - uuid: 36bff6c29af64692839d077febfc7079
-      name: 'Templates/Network devices'
+    - uuid: 7df96b18c230490a9a0a9e2307226333
+      name: Templates
   templates:
     - uuid: 9ad700221fc44abfbf487472afa7ade9
       template: 'Cisco Catalyst 9800 RESTCONF'
       name: 'Cisco Catalyst 9800 RESTCONF'
       description: |
-        Zabbix Template for Cisco Catalyst 9800 Series Wireless Controller (RESTCONF version)
+        Zabbix Template for Cisco Catalyst 9800 Series Wireless Controller
         
         OVERVIEW
-        This template is designed for modern Cisco Catalyst 9800 WLC environments, migrating monitoring from legacy SNMP polling to RESTCONF API.
-        This shift addresses performance issues often observed with SNMPv3 encryption and aligns with Cisco's recommendation to use streaming telemetry/APIs for monitoring.
+        This template adopts a hybrid approach, leveraging RESTCONF for efficient, high-performance data collection while retaining SNMP Traps for real-time alerting.
+        This design addresses performance issues often observed with SNMPv3 encryption by offloading statistical data retrieval to the lightweight RESTCONF API.
         
         KEY FEATURES
         - Performance & Security: Utilizes RESTCONF (HTTP Agent) for efficient data retrieval over HTTPS.
@@ -39,7 +39,7 @@ zabbix_export:
         AUTHOR
         Hideaki Shimomura @hshimomura
       groups:
-        - name: 'Templates/Network devices'
+        - name: Templates
       items:
         - uuid: 3f28c62f21984934811c6cff974c7465
           name: 'Total Joined AP Count'
@@ -58,6 +58,24 @@ zabbix_export:
           headers:
             - name: accept
               value: application/yang-data+json
+        - uuid: c2c233b987084c32a5e834c4d9b07023
+          name: 'HA Enabled Status'
+          type: DEPENDENT
+          key: cisco.ha.enabled
+          delay: '0'
+          trends: '0'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-ha-oper:ha-infra''][''ha-enabled'']'
+            - type: BOOL_TO_DECIMAL
+              parameters:
+                - ''
+            - type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - 1h
+          master_item:
+            key: cisco.ha.stats.master
         - uuid: 27c818b04850469a8290434c7ce1b17c
           name: 'HA Local State'
           type: DEPENDENT
@@ -90,13 +108,6 @@ zabbix_export:
                 - '86400'
           master_item:
             key: cisco.ha.stats.master
-          triggers:
-            - uuid: e8428fb3f86748b4bacce1449d49209b
-              expression: 'last(/Cisco Catalyst 9800 RESTCONF/cisco.ha.peer.state) <> "db-rf-standby-hot"'
-              name: 'HA Peer is NOT Standby Hot (Risk of HA Failure)'
-              priority: HIGH
-              description: 'The peer is not in the ''Standby Hot'' state (e.g., Disabled, Unknown, Standby Cold). Proper failover may not be possible in the event of a failure'
-              manual_close: 'YES'
         - uuid: 6f9a21d2d228432bbe89ca85c3ef36b9
           name: 'WLC HA Stats Master'
           type: HTTP_AGENT
@@ -254,8 +265,7 @@ zabbix_export:
           triggers:
             - uuid: 0005659153154b9d92f08163279ee1be
               expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16|bsnAPCurrentChannelChanged$"],,"regexp","(14179\\.2\\.6\\.3\\.16|bsnAPCurrentChannelChanged)")=1'
-              recovery_mode: RECOVERY_EXPRESSION
-              recovery_expression: 'nodata(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16|bsnAPCurrentChannelChanged$"],3600)=1'
+              recovery_mode: NONE
               name: 'Channel Updated on AP: {{ITEM.VALUE}.regsub("(14179\.2\.2\.1\.1\.3|bsnAPName).*?\s+=\s+\"?([^\"\n\r]*)", \2)} to Primary Channel: {{ITEM.VALUE}.regsub("(14179\.2\.6\.2\.23|bsnAPChannelNumberTrapVariable).*?\s+=\s+(\d+)", \2)}'
               priority: INFO
               description: |
@@ -269,7 +279,7 @@ zabbix_export:
               manual_close: 'YES'
               tags:
                 - tag: AP
-                  value: '{{ITEM.VALUE}.regsub("(bsnAPName|14179\.2\.2\.1\.1\.3).*?=\s*\"?([^\"\n\r]*)", \2)}'
+                  value: '{{ITEM.VALUE}.regsub("(bsnAPName|cLApName|14179\.2\.2\.1\.1\.3|9\.9\.513\.1\.1\.1\.1\.5).*?=\s*\"?([^\"\n\r]*)", \2)}'
         - uuid: 52c4ab29287143fa86e287615f4e1b06
           name: 'SNMP Trap - RadarChannelDetected'
           type: SNMP_TRAP
@@ -281,10 +291,7 @@ zabbix_export:
           triggers:
             - uuid: a59c7d33f9a64f03a6aa3280c86319c8
               expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81|bsnRadarChannelDetected$"],,"regexp","(14179\\.2\\.6\\.3\\.81|bsnRadarChannelDetected)")=1'
-              recovery_mode: RECOVERY_EXPRESSION
-              recovery_expression: 'nodata(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81|bsnRadarChannelDetected$"],3600)=1'
-              correlation_mode: TAG_VALUE
-              correlation_tag: APNAME
+              recovery_mode: NONE
               name: 'DFS Detected on AP: {{ITEM.VALUE}.regsub("(14179\.2\.2\.1\.1\.3|bsnAPName).*?\s+=\s+\"(.*?)\"", \2)} Channel: {{ITEM.VALUE}.regsub("(14179\.2\.2\.2\.1\.4|bsnAPIfPhyChannelNumber).*?\s+=\s+(\d+)", \2)}'
               priority: INFO
               description: |
@@ -505,8 +512,8 @@ zabbix_export:
               Uses the configured "AP Name" for item generation instead of MAC addresses.
             - Dynamic Band Mapping:
               Detects the actual operating frequency band for each slot instead of assuming fixed assignments.
-            - XOR Radio Support: Correctly identifies if Slot 0 is operating in 5GHz mode (e.g., Dual 5GHz).
-            - Wi-Fi 6E Support: Automatically detects 6GHz bands on supported APs (e.g., Slot 2).
+            -  XOR Radio Support: Correctly identifies if Slot 0 is operating in 5GHz mode (e.g., Dual 5GHz).
+              Wi-Fi 6E Support: Automatically detects 6GHz bands on supported APs (e.g., Slot 2).
             
             Efficient Data Retrieval:
             - Minimizes API calls by aggregating data from multiple endpoints within a single JavaScript execution.
@@ -622,3 +629,13 @@ zabbix_export:
           value: 'https://{HOST.CONN}/restconf/data'
         - macro: '{$RESTCONF.USER}'
           value: admin
+  triggers:
+    - uuid: e8428fb3f86748b4bacce1449d49209b
+      expression: |
+        max(/Cisco Catalyst 9800 RESTCONF/cisco.ha.enabled, 30d) = 1
+        and
+        last(/Cisco Catalyst 9800 RESTCONF/cisco.ha.peer.state) <> "db-rf-standby-hot"
+      name: 'HA Peer is NOT Standby Hot'
+      priority: HIGH
+      description: 'The peer is not in the ''Standby Hot'' state (e.g., Disabled, Unknown, Standby Cold). Proper failover may not be possible in the event of a failure'
+      manual_close: 'YES'
