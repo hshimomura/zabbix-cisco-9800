@@ -94,10 +94,11 @@ Main metrics retrieved via RESTCONF.
 | HA Local State | HA Local Status (Active/Standby etc.) | Dependent |
 | HA Peer State | HA Peer Status | Dependent |
 | HA Last Switchover Reason | Reason for the last switchover | Dependent |
-| CPU Utilization | CPU Utilization (one-minute) | HTTP Agent |
-| Memory Utilization | Memory Utilization (Processor) | HTTP Agent |
+| Mobility Node {#NODE.IP}: Link Status | Mobility tunnel status (up/down) | Dependent |
+| Total Joined AP Count | Total count of joined APs | HTTP Agent |
 | Rogue AP: Total Count | Total count of detected Rogue APs | HTTP Agent |
 | Rogue AP: Total Client Count | Total count of clients connected to Rogue APs | HTTP Agent |
+| AP {#AP.NAME} ({#FREQ.NAME}): Operating Channel | Operating Channel per AP/Frequency | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Channel Utilization | Channel utilization per AP/Frequency (CCA) | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Client Count | Client count per AP/Frequency | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Noise Level | Noise level per AP/Frequency | Dependent |

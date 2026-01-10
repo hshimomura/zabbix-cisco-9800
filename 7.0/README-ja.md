@@ -95,10 +95,11 @@ RESTCONF経由で取得される主なメトリクスです。
 | HA Local State | HAのローカルステータス (Active/Standbyなど) | Dependent |
 | HA Peer State | HAのピアステータス | Dependent |
 | HA Last Switchover Reason | 最後のスイッチオーバー理由 | Dependent |
-| CPU Utilization | CPU使用率 (one-minute) | HTTP Agent |
-| Memory Utilization | メモリ使用率 (Processor) | HTTP Agent |
+| Mobility Node {#NODE.IP}: Link Status | モビリティトンネルステータス (up/down) | Dependent |
+| Total Joined AP Count | 参加AP総数 | HTTP Agent |
 | Rogue AP: Total Count | 検知されたRogue APの総数 | HTTP Agent |
 | Rogue AP: Total Client Count | Rogue APに接続しているクライアント総数 | HTTP Agent |
+| AP {#AP.NAME} ({#FREQ.NAME}): Operating Channel | AP/周波数ごとのオペレーティングチャネル | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Channel Utilization | AP/周波数ごとのチャネル使用率 (CCA) | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Client Count | AP/周波数ごとのクライアント数 | Dependent |
 | AP {#AP.NAME} ({#FREQ.NAME}): Noise Level | AP/周波数ごとのノイズレベル | Dependent |
