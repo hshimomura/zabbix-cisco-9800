@@ -40,6 +40,23 @@ zabbix_export:
       groups:
         - name: 'Templates/Network devices'
       items:
+        - uuid: 3f28c62f21984934811c6cff974c7465
+          name: 'Total Joined AP Count'
+          type: HTTP_AGENT
+          key: cisco.ap.total
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-wireless-rogue-oper:rogue-oper-data/rogue-stats/total-client-count'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.[''Cisco-IOS-XE-wireless-access-point-oper:ap-name-mac-map''].length()'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/ap-name-mac-map'
+          headers:
+            - name: accept
+              value: application/yang-data+json
         - uuid: 27c818b04850469a8290434c7ce1b17c
           name: 'HA Local State'
           type: DEPENDENT
@@ -114,6 +131,7 @@ zabbix_export:
           name: 'WLC RRM Stats Master'
           type: HTTP_AGENT
           key: cisco.iosxe.rrm.master
+          delay: 3m
           history: '0'
           value_type: TEXT
           trends: '0'
@@ -140,10 +158,27 @@ zabbix_export:
           headers:
             - name: accept
               value: application/yang-data+json
+        - uuid: ae57fd378e9b4871880cf8426a4d9dee
+          name: 'WLC Radio Config Master'
+          type: HTTP_AGENT
+          key: cisco.radio.cfg.master
+          delay: 15m
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+          authtype: BASIC
+          username: '{$RESTCONF.USER}'
+          password: '{$RESTCONF.PASS}'
+          description: 'Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/radio-oper-data'
+          url: 'https://{HOST.CONN}/restconf/data/Cisco-IOS-XE-wireless-access-point-oper:access-point-oper-data/radio-oper-data'
+          headers:
+            - name: accept
+              value: application/yang-data+json
         - uuid: 3596528aa4d1489d80c6d2e09b2d780f
           name: 'Rogue AP: Total Count'
           type: HTTP_AGENT
           key: cisco.rogue.ap.total
+          delay: 3m
           trends: '0'
           authtype: BASIC
           username: '{$RESTCONF.USER}'
@@ -161,6 +196,7 @@ zabbix_export:
           name: 'Rogue AP: Total Client Count'
           type: HTTP_AGENT
           key: cisco.rogue.client.total
+          delay: 3m
           trends: '0'
           authtype: BASIC
           username: '{$RESTCONF.USER}'
@@ -194,6 +230,7 @@ zabbix_export:
           name: 'WLC WLAN Stats Master'
           type: HTTP_AGENT
           key: cisco.wlan.stats.master
+          delay: 3m
           history: '0'
           value_type: TEXT
           trends: '0'
@@ -208,16 +245,17 @@ zabbix_export:
         - uuid: c181e23106714997a8719d158c57ee11
           name: 'SNMP Trap - Channel Changed'
           type: SNMP_TRAP
-          key: 'snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"]'
+          key: 'snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16|bsnAPCurrentChannelChanged$"]'
           delay: '0'
           value_type: LOG
           trends: '0'
           description: 'AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged'
           triggers:
             - uuid: 0005659153154b9d92f08163279ee1be
-              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],,"like","SNMPv2-SMI::enterprises.14179.2.6.3.16")=1'
-              recovery_mode: NONE
-              name: 'Channel Updated Trap on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Primaly Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.6\.2\.23\..*\=\s(.*)",\1)}'
+              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16|bsnAPCurrentChannelChanged$"],,"regexp","(14179\\.2\\.6\\.3\\.16|bsnAPCurrentChannelChanged)")=1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16|bsnAPCurrentChannelChanged$"],3600)=1'
+              name: 'Channel Updated on AP: {{ITEM.VALUE}.regsub("(14179\.2\.2\.1\.1\.3|bsnAPName).*?\s+=\s+\"?([^\"\n\r]*)", \2)} to Primary Channel: {{ITEM.VALUE}.regsub("(14179\.2\.6\.2\.23|bsnAPChannelNumberTrapVariable).*?\s+=\s+(\d+)", \2)}'
               priority: INFO
               description: |
                 AIRESPACE-WIRELESS-MIB::bsnAPCurrentChannelChanged
@@ -226,23 +264,27 @@ zabbix_export:
                 AIRESPACE-WIRELESS-MIB::bsnAPName
                 
                 find(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.16"],86400)=1
+              type: MULTIPLE
               manual_close: 'YES'
+              tags:
+                - tag: AP
+                  value: '{{ITEM.VALUE}.regsub("(bsnAPName|14179\.2\.2\.1\.1\.3).*?=\s*\"?([^\"\n\r]*)", \2)}'
         - uuid: 52c4ab29287143fa86e287615f4e1b06
           name: 'SNMP Trap - RadarChannelDetected'
           type: SNMP_TRAP
-          key: 'snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"]'
+          key: 'snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81|bsnRadarChannelDetected$"]'
           delay: '0'
           value_type: LOG
           trends: '0'
           description: 'AIRESPACE-WIRELESS-MIB::bsnRadarChannelDetected'
           triggers:
             - uuid: a59c7d33f9a64f03a6aa3280c86319c8
-              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],,,"SNMPv2-SMI::enterprises.14179.2.6.3.81")=1'
+              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81|bsnRadarChannelDetected$"],,"regexp","(14179\\.2\\.6\\.3\\.81|bsnRadarChannelDetected)")=1'
               recovery_mode: RECOVERY_EXPRESSION
-              recovery_expression: 'nodata(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],3600)=0'
+              recovery_expression: 'nodata(/Cisco Catalyst 9800 RESTCONF/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81|bsnRadarChannelDetected$"],3600)=1'
               correlation_mode: TAG_VALUE
               correlation_tag: APNAME
-              name: 'DFS Detected on {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Channel: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.2\.1\.4\..*\=\s(.*)",\1)}'
+              name: 'DFS Detected on AP: {{ITEM.VALUE}.regsub("(14179\.2\.2\.1\.1\.3|bsnAPName).*?\s+=\s+\"(.*?)\"", \2)} Channel: {{ITEM.VALUE}.regsub("(14179\.2\.2\.2\.1\.4|bsnAPIfPhyChannelNumber).*?\s+=\s+(\d+)", \2)}'
               priority: INFO
               description: |
                 Trigger SNMP OID
@@ -257,10 +299,13 @@ zabbix_export:
                 find(/Cisco Catalyst 9800 by restconf/snmptrap["SNMPv2-SMI::enterprises.14179.2.6.3.81"],86400)=1
               type: MULTIPLE
               manual_close: 'YES'
+              tags:
+                - tag: AP
+                  value: '{{ITEM.VALUE}.regsub("(bsnAPName|14179\.2\.2\.1\.1\.3).*?=\s*\"?([^\"\n\r]*)", \2)}'
         - uuid: 9546fd2ac99f486b9ef685886d409523
           name: 'SNMP Trap - AP disassociation'
           type: SNMP_TRAP
-          key: 'snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$]'
+          key: 'snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$|bsnAPDisassociated$|ciscoLwappApAssociated$]'
           delay: '0'
           value_type: LOG
           trends: '0'
@@ -269,12 +314,12 @@ zabbix_export:
             CISCO-LWAPP-AP-MIB::ciscoLwappApAssociated
           triggers:
             - uuid: 0236ba6a0cbb47f88a96625a272698e7
-              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","14179\\.2\\.6\\.3\\.8")=1'
+              expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$|bsnAPDisassociated$|ciscoLwappApAssociated$],,"regexp","(14179\\.2\\.6\\.3\\.8|bsnAPDisassociated)")=1'
               recovery_mode: RECOVERY_EXPRESSION
-              recovery_expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$],,"regexp","9\\.9\\.513\\.0\\.4")=1'
+              recovery_expression: 'find(/Cisco Catalyst 9800 RESTCONF/snmptrap[SNMPv2-SMI::enterprises.14179.2.6.3.8$|SNMPv2-SMI::enterprises.9.9.513.0.4$|bsnAPDisassociated$|ciscoLwappApAssociated$],,"regexp","(9\\.9\\.513\\.0\\.4|ciscoLwappApAssociated)")=1'
               correlation_mode: TAG_VALUE
-              correlation_tag: APNAME
-              name: 'AP Name: {{ITEM.VALUE}.regsub("SNMPv2\-SMI\:\:enterprises\.14179\.2\.2\.1\.1\.3\..*\=\s(.*)",\1)} Disjoined'
+              correlation_tag: AP
+              name: 'AP Name: {{ITEM.VALUE}.regsub("(bsnAPName|14179\.2\.2\.1\.1\.3).*?=\s*\"?([^\"\n\r]*)", \2)} Disjoined'
               priority: WARNING
               description: |
                 Problem trigger TrapOID
@@ -288,6 +333,9 @@ zabbix_export:
                 CISCO-LWAPP-AP-MIB::cLApName (recovery)
               type: MULTIPLE
               manual_close: 'YES'
+              tags:
+                - tag: AP
+                  value: '{{ITEM.VALUE}.regsub("(bsnAPName|cLApName|14179\.2\.2\.1\.1\.3|9\.9\.513\.1\.1\.1\.1\.5).*?=\s*\"?([^\"\n\r]*)", \2)}'
       discovery_rules:
         - uuid: 4958e29747804b7a843e5795b14071c4
           name: 'Mobility Node Discovery'
@@ -477,6 +525,19 @@ zabbix_export:
             - AP AP-Tokyo-01 (5GHz): Channel Utilization
             - AP AP-Osaka-02 (6GHz): Client Count
           item_prototypes:
+            - uuid: 6340e14ce1c84dcaab9034352cbaa910
+              name: 'AP {#AP.NAME} ({#FREQ.NAME}): Operating Channel'
+              type: DEPENDENT
+              key: 'cisco.ap.channel[{#WTP.MAC},{#SLOT.ID}]'
+              delay: '0'
+              value_type: TEXT
+              trends: '0'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$.[''Cisco-IOS-XE-wireless-access-point-oper:radio-oper-data''][?(@[''wtp-mac'']==''{#WTP.MAC}'' && @[''radio-slot-id'']=={#SLOT.ID})][''phy-ht-cfg''][''cfg-data''][''freq-string''].first()'
+              master_item:
+                key: cisco.radio.cfg.master
             - uuid: a31755cca0c74a83a03380ab3056aa23
               name: 'AP {#AP.NAME} ({#FREQ.NAME}): Channel Utilization'
               type: DEPENDENT
