@@ -4,6 +4,10 @@ English version is [here](README.md)
 
 Zabbix のバージョンおよび監視方式（SNMP vs RESTCONF）に合わせて、適切なバージョンのテンプレートを選択してください。
 
+> [!NOTE]
+> 本テンプレートは [Zabbix Community Templates](https://github.com/zabbix/community-templates/tree/main/Network_Devices/Cisco/template_cisco_catalyst_9800_snmp) に取り込まれました。
+
+
 ## バージョンと監視方式
 
 | ディレクトリ | テンプレート説明 | 対象 Zabbix バージョン | 監視方式 |

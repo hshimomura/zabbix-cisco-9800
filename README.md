@@ -4,6 +4,10 @@ Japanese version is [here](README-ja.md)
 
 Please select the appropriate template version according to your Zabbix version and monitoring method (SNMP vs RESTCONF).
 
+> [!NOTE]
+> This template has been included in the [Zabbix Community Templates](https://github.com/zabbix/community-templates/tree/main/Network_Devices/Cisco/template_cisco_catalyst_9800_snmp).
+
+
 ## Versions and Monitoring Methods
 
 | Directory | Template Description | Target Zabbix Version | Monitoring Method |
